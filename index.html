@@ -12,7 +12,6 @@
         h1, h2, .font-serif { font-family: 'Playfair Display', serif; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-        /* Imagem de Fundo Atualizada */
         .header-bg {
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
                         url('https://i.imgur.com/3aqQGlJ.jpeg');
@@ -40,6 +39,9 @@
         .animate-pulse-green { animation: pulse-green 2s infinite; border-color: #22c55e !important; }
         .animate-pulse-red { animation: pulse-red 2s infinite; border-color: #ef4444 !important; }
         .payment-btn.active { background-color: #5d2906 !important; color: white !important; border-color: #5d2906 !important; }
+        
+        /* Estilo para imagem do produto no cardápio */
+        .product-img { width: 80px; height: 80px; border-radius: 1rem; object-cover: cover; }
     </style>
 </head>
 <body class="text-stone-900 pb-44">
@@ -47,8 +49,7 @@
     <div id="splash-screen">
         <img src="https://i.ibb.co/LzNfX6Xp/Whats-App-Image-2026-03-13-at-20-43-58.jpg" class="w-24 h-24 rounded-full border-4 border-yellow-700 mb-6 animate-bounce shadow-2xl">
         <div class="text-center px-6">
-            <p class="text-yellow-500 font-serif italic text-sm mb-1">Sejam bem-vindos ao</p>
-            <h2 class="text-white text-2xl font-bold uppercase tracking-[0.2em]">Terreiro do Barbosa</h2>
+            <h2 class="text-white text-2xl font-bold uppercase tracking-[0.2em]">Cardápio do Barbosa !</h2>
         </div>
     </div>
 
@@ -81,6 +82,7 @@
         <button onclick="filterCategory('todas')" class="px-6 py-2 rounded-xl bg-orange-950 text-white text-xs font-bold uppercase tracking-wider shadow-md">Todas</button>
         <button onclick="filterCategory('entradas')" class="px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider">Entradas</button>
         <button onclick="filterCategory('churrasco')" class="px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider">Churrasco</button>
+        <button onclick="filterCategory('principais')" class="px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider">Baião/Feijoada</button>
         <button onclick="filterCategory('bebidas')" class="px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider">Bebidas</button>
         <button onclick="filterCategory('drinks')" class="px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider">Drinks</button>
     </nav>
@@ -98,6 +100,7 @@
     <div id="item-modal" class="fixed inset-0 bg-black/80 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative">
             <button onclick="closeModal()" class="absolute top-4 right-6 text-stone-300 text-3xl">&times;</button>
+            <div id="modal-img-container" class="mb-4"></div>
             <h2 id="modal-item-title" class="font-bold text-2xl uppercase text-stone-800 mb-1 pr-8 leading-tight">ITEM</h2>
             <div id="modal-item-price" class="text-xl font-black text-green-600 mb-6 tracking-tight">R$ 0,00</div>
             
@@ -128,7 +131,7 @@
         </div>
         
         <div class="text-center pt-3 border-t border-stone-100 flex justify-center items-center gap-4">
-            <span class="text-[10px] font-black text-stone-400 uppercase tracking-tighter">Desenvolvido por lu4ncarlos</span>
+            <span class="text-[10px] font-black text-stone-400 uppercase tracking-tighter">Desenvolvido por @lu4ncarlos</span>
             <a href="https://www.instagram.com/lu4ncarlos?igsh=ajV6cWc2N3Y2cHE3&utm_source=qr" target="_blank" class="text-pink-600 text-lg hover:scale-110 transition-transform">
                 <i class="fab fa-instagram"></i>
             </a>
@@ -166,13 +169,80 @@
     <script>
         const WHATSAPP_NUMBER = "5588992791644";
         
-        let PRODUTOS = JSON.parse(localStorage.getItem('barbosa_db')) || [
-            { id: 1, cat: 'entradas', name: "Batata frita", price: 16.00, desc: "Porção crocante tradicional" },
-            { id: 2, cat: 'entradas', name: "Batata recheada", price: 20.00, desc: "Cheddar, queijo e bacon" },
-            { id: 3, cat: 'entradas', name: "Macaxeira frita", price: 16.00, desc: "Porção bem crocante" },
-            { id: 7, cat: 'entradas', name: "Carne de sol", price: 40.00, desc: "Com manteiga da terra" },
-            { id: 9, cat: 'churrasco', name: "Picanha (200g)", price: 22.00, desc: "Corte na brasa" },
-            { id: 13, cat: 'bebidas', name: "Cerveja 600ml", price: 15.00, desc: "Diversas marcas geladas" }
+        // CARDÁPIO ATUALIZADO
+        const PRODUTOS = [
+            // Entradas
+            { id: 1, cat: 'entradas', name: "Batata frita", price: 16.00, desc: "Porção crocante tradicional", img: "" },
+            { id: 2, cat: 'entradas', name: "Batata recheada", price: 20.00, desc: "Cheddar, queijo e bacon", img: "" },
+            { id: 3, cat: 'entradas', name: "Macaxeira frita", price: 16.00, desc: "Porção bem crocante", img: "" },
+            { id: 4, cat: 'entradas', name: "Macaxeira cozida", price: 16.00, desc: "Macia e saborosa", img: "" },
+            { id: 5, cat: 'entradas', name: "Bolinha de queijo", price: 18.00, desc: "12 unidades", img: "" },
+            { id: 6, cat: 'entradas', name: "Bolinha de carne de sol", price: 18.00, desc: "12 unidades", img: "" },
+            { id: 7, cat: 'entradas', name: "Costela com barbecue", price: 18.00, desc: "12 unidades", img: "" },
+            { id: 8, cat: 'entradas', name: "Pastelzinho de carne de sol", price: 18.00, desc: "12 unidades", img: "" },
+            { id: 9, cat: 'entradas', name: "Camarão empanado", price: 24.00, desc: "12 unidades", img: "" },
+            { id: 10, cat: 'entradas', name: "Isca de peixe", price: 20.00, desc: "12 unidades", img: "" },
+            { id: 11, cat: 'entradas', name: "Carne de sol", price: 40.00, desc: "Com manteiga da terra", img: "" },
+            { id: 12, cat: 'entradas', name: "Tripa de porco", price: 25.00, desc: "Bem sequinha", img: "" },
+            { id: 13, cat: 'entradas', name: "Moela", price: 20.00, desc: "Ao molho da casa", img: "" },
+            { id: 14, cat: 'entradas', name: "Asinha de frango", price: 25.00, desc: "Porção", img: "" },
+            { id: 15, cat: 'entradas', name: "Porco trinchado", price: 30.00, desc: "Acebolado", img: "" },
+            { id: 16, cat: 'entradas', name: "Filé com fritas", price: 40.00, desc: "O clássico", img: "" },
+            { id: 17, cat: 'entradas', name: "Peixe frito", price: 55.00, desc: "Inteiro", img: "" },
+            { id: 18, cat: 'entradas', name: "Camarão alho e óleo", price: 40.00, desc: "Porção especial", img: "" },
+
+            // Churrasco
+            { id: 19, cat: 'churrasco', name: "Picanha (200g)", price: 22.00, desc: "Corte na brasa", img: "" },
+            { id: 20, cat: 'churrasco', name: "Picanha nordestina", price: 26.00, desc: "200g", img: "" },
+            { id: 21, cat: 'churrasco', name: "Maminha", price: 18.00, desc: "200g", img: "" },
+            { id: 22, cat: 'churrasco', name: "Carneiro", price: 20.00, desc: "200g", img: "" },
+            { id: 23, cat: 'churrasco', name: "Costela de porco", price: 16.00, desc: "200g", img: "" },
+            { id: 24, cat: 'churrasco', name: "Filé de porco", price: 18.00, desc: "200g", img: "" },
+            { id: 25, cat: 'churrasco', name: "Linguiça", price: 6.00, desc: "Unidade", img: "" },
+            { id: 26, cat: 'churrasco', name: "Frango", price: 12.00, desc: "Porção", img: "" },
+            { id: 27, cat: 'churrasco', name: "Misto", price: 55.00, desc: "Boi, porco, linguiça e frango", img: "" },
+
+            // Principais
+            { id: 28, cat: 'principais', name: "Baião de dois", price: 14.00, desc: "Tradicional", img: "" },
+            { id: 29, cat: 'principais', name: "Baião cremoso", price: 20.00, desc: "Com queijo e nata", img: "" },
+            { id: 30, cat: 'principais', name: "Feijoada Completa", price: 30.00, desc: "Sáb e Dom: Arroz, bisteca, torresmo, vinagrete e laranja", img: "" },
+
+            // Bebidas (Refrigerantes, Latas, Energético)
+            { id: 31, cat: 'bebidas', name: "Coca-Cola 1L", price: 10.00, desc: "Garrafa", img: "" },
+            { id: 32, cat: 'bebidas', name: "Coca Zero 1L", price: 10.00, desc: "Garrafa", img: "" },
+            { id: 33, cat: 'bebidas', name: "Cajuína 1L", price: 10.00, desc: "Tradicional", img: "" },
+            { id: 34, cat: 'bebidas', name: "Guaraná 1L", price: 10.00, desc: "Garrafa", img: "" },
+            { id: 35, cat: 'bebidas', name: "Fanta 1L", price: 10.00, desc: "Laranja", img: "" },
+            { id: 36, cat: 'bebidas', name: "Lata (Coca/Zero/Cajuína/Guaraná)", price: 5.00, desc: "350ml", img: "" },
+            { id: 37, cat: 'bebidas', name: "Red Bull", price: 12.00, desc: "Energético", img: "" },
+            { id: 38, cat: 'bebidas', name: "TNT", price: 10.00, desc: "Energético", img: "" },
+
+            // Bebidas Quentes
+            { id: 39, cat: 'bebidas', name: "Dose Ypióca (Ouro/Prata)", price: 4.00, desc: "Dose", img: "" },
+            { id: 40, cat: 'bebidas', name: "Dose 51 Ouro/Dreher", price: 4.00, desc: "Dose", img: "" },
+            { id: 41, cat: 'bebidas', name: "Vodka Smirnoff/Campari", price: 8.00, desc: "Dose", img: "" },
+            { id: 42, cat: 'bebidas', name: "Whisky Black White", price: 8.00, desc: "Dose", img: "" },
+            { id: 43, cat: 'bebidas', name: "Whisky Red Label", price: 10.00, desc: "Dose", img: "" },
+            { id: 44, cat: 'bebidas', name: "Whisky Old Parr", price: 14.00, desc: "Dose", img: "" },
+
+            // Cervejas
+            { id: 45, cat: 'bebidas', name: "Skol/Brahma/Devassa/Itaipava", price: 9.00, desc: "600ml", img: "" },
+            { id: 46, cat: 'bebidas', name: "Petra/Amstel", price: 10.00, desc: "600ml", img: "" },
+            { id: 47, cat: 'bebidas', name: "Budweiser", price: 11.00, desc: "600ml", img: "" },
+            { id: 48, cat: 'bebidas', name: "Stella/Spaten", price: 13.00, desc: "600ml", img: "" },
+            { id: 49, cat: 'bebidas', name: "Heineken", price: 15.00, desc: "600ml", img: "" },
+
+            // Drinks
+            { id: 50, cat: 'drinks', name: "Barbosa Gim", price: 20.00, desc: "Especial da casa", img: "" },
+            { id: 51, cat: 'drinks', name: "Barbosa Ice", price: 22.00, desc: "Refrescante", img: "" },
+            { id: 52, cat: 'drinks', name: "Babaloo", price: 18.00, desc: "Doce", img: "" },
+            { id: 53, cat: 'drinks', name: "Caipirinha Limão/Maracujá", price: 15.00, desc: "Clássica", img: "" },
+            { id: 54, cat: 'drinks', name: "Caipirinha Morango", price: 18.00, desc: "Especial", img: "" },
+
+            // Águas e Sucos
+            { id: 55, cat: 'bebidas', name: "Água Mineral", price: 3.00, desc: "500ml", img: "" },
+            { id: 56, cat: 'bebidas', name: "Suco Acerola/Cajá/Abacaxi", price: 5.00, desc: "Copo", img: "" },
+            { id: 57, cat: 'bebidas', name: "Suco Maracujá", price: 6.00, desc: "Copo", img: "" }
         ];
 
         let TAXAS_ENTREGA = [
@@ -195,9 +265,21 @@
             }, 2500);
         };
 
+        // LÓGICA DE HORÁRIO ATUALIZADA
         function checkStatus() {
-            const hora = new Date().getHours();
-            const aberto = (hora >= 17 || hora < 1);
+            const agora = new Date();
+            const dia = agora.getDay(); // 0: Dom, 5: Sex, 6: Sáb
+            const hora = agora.getHours();
+            let aberto = false;
+
+            if (dia === 5) { // Sexta
+                if (hora >= 16) aberto = true;
+            } else if (dia === 6) { // Sábado
+                if (hora >= 12) aberto = true;
+            } else if (dia === 0) { // Domingo
+                if (hora >= 12 && hora < 22) aberto = true;
+            }
+
             const div = document.getElementById('status-loja');
             const logo = document.getElementById('logo-loja');
             if(aberto) {
@@ -217,13 +299,13 @@
             const filtered = PRODUTOS.filter(p => (cat === 'todas' || p.cat === cat) && p.name.toLowerCase().includes(search));
             
             container.innerHTML = filtered.map(p => `
-                <div onclick="openItemModal(${p.id})" class="bg-white p-5 rounded-3xl shadow-sm border-2 border-transparent hover:border-orange-50 flex justify-between items-center cursor-pointer active:scale-95 transition-all">
+                <div onclick="openItemModal(${p.id})" class="bg-white p-4 rounded-3xl shadow-sm border-2 border-transparent hover:border-orange-50 flex justify-between items-center cursor-pointer active:scale-95 transition-all">
                     <div class="text-left flex-1 pr-4">
                         <h3 class="font-bold text-sm uppercase text-stone-700 tracking-tight">${p.name}</h3>
                         <p class="text-[10px] text-stone-400 mt-1 line-clamp-1">${p.desc}</p>
                         <p class="font-black text-orange-900 text-lg mt-2">R$ ${p.price.toFixed(2)}</p>
                     </div>
-                    <div class="bg-stone-50 w-12 h-12 rounded-2xl flex items-center justify-center text-orange-950 border border-stone-100"><i class="fa fa-plus text-sm"></i></div>
+                    ${p.img ? `<img src="${p.img}" class="product-img ml-2">` : `<div class="bg-stone-50 w-12 h-12 rounded-2xl flex items-center justify-center text-orange-950 border border-stone-100"><i class="fa fa-plus text-sm"></i></div>`}
                 </div>`).join('');
         }
 
@@ -234,6 +316,10 @@
             document.getElementById('modal-item-price').innerText = `R$ ${p.price.toFixed(2)}`;
             document.getElementById('item-qty').innerText = "1";
             document.getElementById('item-obs').value = "";
+            
+            const imgContainer = document.getElementById('modal-img-container');
+            imgContainer.innerHTML = p.img ? `<img src="${p.img}" class="w-full h-48 object-cover rounded-2xl mb-4">` : '';
+            
             document.getElementById('item-modal').classList.remove('hidden');
         }
 
@@ -330,9 +416,11 @@
         }
 
         function openAdmin() {
-            if(prompt("Senha:") === "1234") {
-                document.getElementById('admin-modal').classList.remove('hidden');
-                // Lógica de admin simplificada...
+            const pass = prompt("Senha Administrativa:");
+            if(pass === "1234") {
+                alert("Painel Administrativo em desenvolvimento. Aqui você poderá editar preços e produtos futuramente!");
+            } else {
+                alert("Senha incorreta!");
             }
         }
     </script>
