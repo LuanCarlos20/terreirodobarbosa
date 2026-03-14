@@ -44,10 +44,7 @@
 <body class="text-stone-900 pb-44">
 
     <div id="splash-screen">
-        <img src="https://i.imgur.com/zKOhMDm.jpeg" class="w-24 h-24 rounded-full border-4 border-red-600 mb-6 animate-bounce shadow-2xl">
-        <div class="text-center px-6">
-            <h2 class="text-white text-2xl font-bold uppercase tracking-[0.2em]">Cardápio do Barbosa !</h2>
-        </div>
+        <img src="https://i.imgur.com/zKOhMDm.jpeg" class="w-24 h-24 rounded-full border-4 border-red-600 animate-bounce shadow-2xl">
     </div>
 
     <header class="w-full h-[320px] header-bg relative flex flex-col items-center justify-center shadow-inner">
@@ -262,7 +259,6 @@
 
         function filterCategory(cat, event) { 
             renderMenu(cat);
-            // Corrige o efeito visual dos botões
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 btn.className = "cat-btn px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider";
             });
@@ -353,6 +349,8 @@
             curItem = {...p, qty: 1};
             document.getElementById('modal-item-title').innerText = p.name;
             document.getElementById('modal-item-price').innerText = `R$ ${p.price.toFixed(2)}`;
+            document.getElementById('item-qty').innerText = "1";
+            document.getElementById('item-obs').value = "";
             document.getElementById('item-modal').classList.remove('hidden');
         }
         function updateQty(v) { curItem.qty = Math.max(1, curItem.qty + v); document.getElementById('item-qty').innerText = curItem.qty; document.getElementById('modal-item-price').innerText = `R$ ${(curItem.price * curItem.qty).toFixed(2)}`; }
