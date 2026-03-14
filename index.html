@@ -26,21 +26,23 @@
             transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
-        /* Animação Vinho */
+        /* Animações de Pulso */
+        @keyframes pulse-green {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); border-color: rgba(34, 197, 94, 1); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); border-color: rgba(34, 197, 94, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); border-color: rgba(34, 197, 94, 1); }
+        }
+        
+        /* Pulso Vinho */
         @keyframes pulse-wine {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(128, 0, 32, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(128, 0, 32, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(128, 0, 32, 0); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(128, 0, 32, 0.7); border-color: #800020; }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(128, 0, 32, 0); border-color: rgba(128, 0, 32, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(128, 0, 32, 0); border-color: #800020; }
         }
 
-        .animate-wine { animation: pulse-wine 2s infinite; }
-        
-        @keyframes pulse-green {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
         .animate-pulse-green { animation: pulse-green 2s infinite; }
+        .animate-pulse-wine { animation: pulse-wine 2s infinite; }
+        
         .payment-btn.active { background-color: #5d2906 !important; color: white !important; border-color: #5d2906 !important; }
     </style>
 </head>
@@ -48,7 +50,7 @@
 
     <div id="splash-screen">
         <img src="https://i.imgur.com/zKOhMDm.jpeg" 
-             class="w-40 h-40 rounded-full border-4 shadow-2xl mb-6 animate-wine" 
+             class="w-32 h-32 rounded-full border-4 shadow-2xl mb-6 animate-pulse-wine" 
              style="border-color: #800020;">
         <div class="text-center">
             <p class="text-stone-300 uppercase tracking-[0.3em] text-[10px] mb-1">Bem-vindo ao</p>
@@ -242,7 +244,7 @@
             setTimeout(() => { 
                 document.getElementById('splash-screen').style.opacity = '0'; 
                 setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800); 
-            }, 3500);
+            }, 3000);
         };
 
         function checkStatus() {
@@ -259,10 +261,12 @@
                 div.className = "text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center bg-green-600 animate-pulse-green w-fit mx-auto";
                 txt.innerText = "Aberto Agora";
                 logo.className = "w-24 h-24 rounded-full object-cover border-4 shadow-2xl mx-auto mb-3 animate-pulse-green";
+                logo.style.borderColor = "#22c55e";
             } else {
-                div.className = "text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center bg-red-600 w-fit mx-auto";
+                div.className = "text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center bg-red-900 animate-pulse-wine w-fit mx-auto";
                 txt.innerText = "Fechado";
-                logo.className = "w-24 h-24 rounded-full object-cover border-4 shadow-2xl mx-auto mb-3 border-red-600";
+                logo.className = "w-24 h-24 rounded-full object-cover border-4 shadow-2xl mx-auto mb-3 animate-pulse-wine";
+                logo.style.borderColor = "#800020";
             }
         }
 
