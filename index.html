@@ -19,33 +19,38 @@
             background-position: center;
         }
 
-        /* Splash Screen Ajustada */
+        /* Splash Screen */
         #splash-screen {
             position: fixed; inset: 0; background: #2d1610; z-index: 100;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
-        @keyframes pulse-green {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); border-color: rgba(34, 197, 94, 1); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); border-color: rgba(34, 197, 94, 0.5); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); border-color: rgba(34, 197, 94, 1); }
-        }
-        @keyframes pulse-red {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); border-color: rgba(239, 68, 68, 1); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); border-color: rgba(239, 68, 68, 0.5); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); border-color: rgba(239, 68, 68, 1); }
+        /* Animação do Círculo Vermelho Vinho */
+        @keyframes pulse-wine {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(128, 0, 32, 0.7); border-color: #800020; }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(128, 0, 32, 0); border-color: #800020; }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(128, 0, 32, 0); border-color: #800020; }
         }
 
+        .animate-wine { animation: pulse-wine 2s infinite; }
+        
+        /* Status Loja */
+        @keyframes pulse-green {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
         .animate-pulse-green { animation: pulse-green 2s infinite; }
-        .animate-pulse-red { animation: pulse-red 2s infinite; }
         .payment-btn.active { background-color: #5d2906 !important; color: white !important; border-color: #5d2906 !important; }
     </style>
 </head>
 <body class="text-stone-900 pb-44">
 
     <div id="splash-screen">
-        <img src="https://i.imgur.com/zKOhMDm.jpeg" class="w-32 h-32 rounded-full border-4 border-red-600 animate-bounce shadow-2xl mb-6">
+        <img src="https://i.imgur.com/zKOhMDm.jpeg" 
+             class="w-40 h-40 rounded-full border-4 shadow-2xl mb-6 animate-wine" 
+             style="border-color: #800020;">
         <div class="text-center">
             <p class="text-stone-300 uppercase tracking-[0.3em] text-[10px] mb-1">Bem-vindo ao</p>
             <h2 class="text-white text-2xl font-serif font-bold">Cardápio do Barbosa</h2>
@@ -238,7 +243,7 @@
             setTimeout(() => { 
                 document.getElementById('splash-screen').style.opacity = '0'; 
                 setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800); 
-            }, 3000);
+            }, 3500);
         };
 
         function checkStatus() {
@@ -256,9 +261,9 @@
                 txt.innerText = "Aberto Agora";
                 logo.className = "w-24 h-24 rounded-full object-cover border-4 shadow-2xl mx-auto mb-3 animate-pulse-green";
             } else {
-                div.className = "text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center bg-red-600 animate-pulse-red w-fit mx-auto";
+                div.className = "text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center bg-red-600 w-fit mx-auto";
                 txt.innerText = "Fechado";
-                logo.className = "w-24 h-24 rounded-full object-cover border-4 shadow-2xl mx-auto mb-3 animate-pulse-red";
+                logo.className = "w-24 h-24 rounded-full object-cover border-4 shadow-2xl mx-auto mb-3 border-red-600";
             }
         }
 
