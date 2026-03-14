@@ -25,7 +25,6 @@
             transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
-        /* Animações de Pulso */
         @keyframes pulse-green {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); border-color: rgba(34, 197, 94, 1); }
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); border-color: rgba(34, 197, 94, 0.5); }
@@ -70,9 +69,8 @@
         <div class="text-center z-10 mt-6">
             <img id="logo-loja" src="https://i.imgur.com/zKOhMDm.jpeg" class="w-24 h-24 rounded-full object-cover border-4 shadow-2xl mx-auto mb-3 transition-all duration-500">
             <h1 class="text-white text-2xl font-serif font-bold uppercase tracking-widest px-4">Terreiro do Barbosa</h1>
-            
             <div class="flex flex-col items-center gap-2 mt-2">
-                <div id="status-loja" class="text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-3 mx-auto w-fit transition-all uppercase">
+                <div id="status-loja" class="text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-3 mx-auto w-fit uppercase">
                     <i class="fa fa-circle text-[8px]"></i> <span id="status-texto">Verificando...</span>
                 </div>
                 <div id="horario-texto" class="text-white/80 text-[11px] font-bold uppercase tracking-tighter bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm"></div>
@@ -134,11 +132,11 @@
     <div id="cart-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-md">
         <div class="bg-white w-full max-w-lg rounded-[2.5rem] max-h-[90vh] flex flex-col p-6 shadow-2xl relative">
             <button onclick="toggleCartModal(false)" class="absolute top-5 right-6 text-stone-300 text-4xl">&times;</button>
-            <h2 class="text-2xl font-serif font-bold mb-6 border-b pb-4">Minha Comanda</h2>
+            <h2 class="text-2xl font-serif font-bold mb-6 border-b pb-4">Meu Pedido</h2>
             <div id="cart-items" class="flex-1 overflow-y-auto space-y-3 pr-1 scrollbar-hide mb-6"></div>
             <div class="bg-stone-50 p-5 rounded-3xl border border-stone-100 mb-6 space-y-4">
                 <select id="delivery-location" onchange="updateCartUI()" class="w-full rounded-xl p-4 bg-white border-2 border-stone-100 font-bold outline-none">
-                    <option value="0" data-fee="0">Selecione o local...</option>
+                    <option value="0" data-fee="0">Selecione o Bairro...</option>
                 </select>
                 <div class="grid grid-cols-3 gap-2">
                     <button onclick="setPayment('Pix')" id="pay-Pix" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Pix</button>
@@ -149,6 +147,7 @@
                     <input type="number" id="change-value" placeholder="Troco para quanto?" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none">
                 </div>
                 <input type="text" id="cust-name" placeholder="Seu Nome" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none">
+                <input type="text" id="cust-address" placeholder="Endereço Completo (Rua, Nº, Ref)" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none">
             </div>
             <button onclick="sendOrder()" class="w-full bg-green-600 text-white font-bold py-5 rounded-2xl text-lg shadow-xl flex items-center justify-center gap-3">
                 Enviar para o WhatsApp <i class="fab fa-whatsapp text-xl"></i>
@@ -171,7 +170,6 @@
         const WHATSAPP_NUMBER = "5588992791644";
         
         let PRODUTOS = [
-            // ENTRADAS
             { id: 1, cat: 'entradas', name: "Batata frita", price: 16.00, desc: "Porção crocante tradicional" },
             { id: 2, cat: 'entradas', name: "Batata recheada", price: 20.00, desc: "Cheddar, queijo e bacon" },
             { id: 3, cat: 'entradas', name: "Macaxeira frita", price: 16.00, desc: "" },
@@ -190,8 +188,6 @@
             { id: 16, cat: 'entradas', name: "Filé com fritas", price: 40.00, desc: "" },
             { id: 17, cat: 'entradas', name: "Peixe frito", price: 55.00, desc: "" },
             { id: 18, cat: 'entradas', name: "Camarão alho e óleo", price: 40.00, desc: "" },
-
-            // CHURRASCO
             { id: 19, cat: 'churrasco', name: "Picanha (200g)", price: 22.00, desc: "" },
             { id: 20, cat: 'churrasco', name: "Picanha nordestina (200g)", price: 26.00, desc: "" },
             { id: 21, cat: 'churrasco', name: "Maminha (200g)", price: 18.00, desc: "" },
@@ -201,59 +197,22 @@
             { id: 25, cat: 'churrasco', name: "Linguiça", price: 6.00, desc: "" },
             { id: 26, cat: 'churrasco', name: "Frango", price: 12.00, desc: "" },
             { id: 27, cat: 'churrasco', name: "Misto Completo", price: 55.00, desc: "Boi, Porco, Linguiça e Frango" },
-
-            // PRATOS
-            { id: 28, cat: 'principais', name: "Baião de dois", price: 14.00, desc: "Tradicional" },
+            { id: 28, cat: 'principais', name: "Baião de dois", price: 14.00, desc: "" },
             { id: 29, cat: 'principais', name: "Baião cremoso", price: 20.00, desc: "" },
-            { id: 30, cat: 'principais', name: "Feijoada completa", price: 30.00, desc: "Sáb e Dom (Arroz, bisteca, torresmo, laranja)" },
-
-            // BEBIDAS
+            { id: 30, cat: 'principais', name: "Feijoada completa", price: 30.00, desc: "Sáb e Dom" },
             { id: 31, cat: 'bebidas', name: "Coca-Cola 1L", price: 10.00, desc: "" },
             { id: 32, cat: 'bebidas', name: "Coca Zero 1L", price: 10.00, desc: "" },
             { id: 33, cat: 'bebidas', name: "Cajuína 1L", price: 10.00, desc: "" },
             { id: 34, cat: 'bebidas', name: "Guaraná 1L", price: 10.00, desc: "" },
             { id: 35, cat: 'bebidas', name: "Fanta 1L", price: 10.00, desc: "" },
-            { id: 36, cat: 'bebidas', name: "Refrigerante Lata", price: 5.00, desc: "Coca, Guaraná, Fanta, Soda, Cajuína" },
+            { id: 36, cat: 'bebidas', name: "Refrigerante Lata", price: 5.00, desc: "" },
             { id: 37, cat: 'bebidas', name: "Red Bull", price: 12.00, desc: "" },
             { id: 38, cat: 'bebidas', name: "TNT", price: 10.00, desc: "" },
-            { id: 39, cat: 'bebidas', name: "Dose Ypióca (Ouro/Prata)", price: 4.00, desc: "" },
-            { id: 40, cat: 'bebidas', name: "Dose 51 Ouro", price: 4.00, desc: "" },
-            { id: 41, cat: 'bebidas', name: "Dose Dreher", price: 4.00, desc: "" },
-            { id: 42, cat: 'bebidas', name: "Dose São João da Barra", price: 5.00, desc: "" },
-            { id: 43, cat: 'bebidas', name: "Dose Smirnoff", price: 8.00, desc: "" },
-            { id: 44, cat: 'bebidas', name: "Dose Campari / Martini", price: 8.00, desc: "" },
-            { id: 45, cat: 'bebidas', name: "Dose Black & White", price: 8.00, desc: "" },
-            { id: 46, cat: 'bebidas', name: "Dose Red Label", price: 10.00, desc: "" },
-            { id: 47, cat: 'bebidas', name: "Dose Old Parr", price: 14.00, desc: "" },
-
-            // DRINKS
+            { id: 39, cat: 'bebidas', name: "Dose Ypióca", price: 4.00, desc: "" },
             { id: 48, cat: 'drinks', name: "Barbosa Gim", price: 20.00, desc: "" },
-            { id: 49, cat: 'drinks', name: "Barbosa Ice", price: 22.00, desc: "" },
-            { id: 50, cat: 'drinks', name: "Babaloo", price: 18.00, desc: "" },
-            { id: 51, cat: 'drinks', name: "Tropical", price: 20.00, desc: "" },
-            { id: 52, cat: 'drinks', name: "Caipirinha Morango", price: 18.00, desc: "" },
-            { id: 53, cat: 'drinks', name: "Caipirinha Maracujá / Limão", price: 15.00, desc: "" },
-
-            // CERVEJAS
-            { id: 54, cat: 'bebidas', name: "Skol 600ml", price: 10.00, desc: "" },
-            { id: 55, cat: 'bebidas', name: "Brahma/Devassa/Itaipava 600ml", price: 9.00, desc: "" },
-            { id: 56, cat: 'bebidas', name: "Petra / Amstel 600ml", price: 10.00, desc: "" },
-            { id: 57, cat: 'bebidas', name: "Budweiser 600ml", price: 11.00, desc: "" },
-            { id: 58, cat: 'bebidas', name: "Stella / Spaten 600ml", price: 13.00, desc: "" },
+            { id: 53, cat: 'drinks', name: "Caipirinha Limão", price: 15.00, desc: "" },
             { id: 59, cat: 'bebidas', name: "Heineken 600ml", price: 15.00, desc: "" },
-            { id: 60, cat: 'bebidas', name: "Skol/Itaipava Lata", price: 5.00, desc: "" },
-            { id: 61, cat: 'bebidas', name: "Brahma Zero Lata", price: 6.00, desc: "" },
-            { id: 62, cat: 'bebidas', name: "Longneck Heineken/Stella", price: 10.00, desc: "" },
-            { id: 63, cat: 'bebidas', name: "Longneck Budweiser", price: 9.00, desc: "" },
-            { id: 64, cat: 'bebidas', name: "Ice Cabaré", price: 10.00, desc: "" },
-
-            // AGUAS E SUCOS
-            { id: 65, cat: 'bebidas', name: "Água Mineral", price: 3.00, desc: "" },
-            { id: 66, cat: 'bebidas', name: "Água com Gás", price: 4.00, desc: "" },
-            { id: 67, cat: 'bebidas', name: "Suco Copo (Acerola/Cajá/Abacaxi)", price: 5.00, desc: "" },
-            { id: 68, cat: 'bebidas', name: "Suco Copo Maracujá", price: 6.00, desc: "" },
-            { id: 69, cat: 'bebidas', name: "H2O", price: 5.00, desc: "" },
-            { id: 70, cat: 'bebidas', name: "Coco copinho", price: 5.00, desc: "" }
+            { id: 65, cat: 'bebidas', name: "Água Mineral", price: 3.00, desc: "" }
         ];
 
         let TAXAS_ENTREGA = [
@@ -282,16 +241,8 @@
             const agora = new Date();
             const dia = agora.getDay();
             const hora = agora.getHours();
-            let aberto = false;
-            let info = "";
-            const dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+            let aberto = (dia === 5 && hora >= 16) || (dia === 6 && hora >= 12) || (dia === 0 && hora >= 12 && hora < 22);
 
-            if(dia === 5) { info = "Sexta: 16h às 00h"; if(hora >= 16) aberto = true; }
-            else if(dia === 6) { info = "Sábado: 12h às 00h"; if(hora >= 12) aberto = true; }
-            else if(dia === 0) { info = "Domingo: 12h às 22h"; if(hora >= 12 && hora < 22) aberto = true; }
-            else { info = "Fechado hoje"; }
-
-            document.getElementById('horario-texto').innerText = `${dias[dia]} • ${info}`;
             const div = document.getElementById('status-loja');
             const txt = document.getElementById('status-texto');
             const logo = document.getElementById('logo-loja');
@@ -311,83 +262,14 @@
             const container = document.getElementById('menu-container');
             const search = document.getElementById('search-input').value.toLowerCase();
             const filtered = PRODUTOS.filter(p => (cat === 'todas' || p.cat === cat) && p.name.toLowerCase().includes(search));
-            
             container.innerHTML = filtered.map(p => `
                 <div onclick="openItemModal(${p.id})" class="bg-white p-4 rounded-3xl shadow-sm border-2 border-transparent flex justify-between items-center cursor-pointer active:scale-95 transition-all">
                     <div class="text-left flex-1 pr-4">
                         <h3 class="font-bold text-[13px] uppercase text-stone-700">${p.name}</h3>
-                        ${p.desc ? `<p class="text-[10px] text-stone-400 mt-1">${p.desc}</p>` : ''}
                         <p class="font-black text-orange-900 text-lg mt-1">R$ ${p.price.toFixed(2)}</p>
                     </div>
-                    <div class="bg-stone-50 w-11 h-11 rounded-2xl flex items-center justify-center text-orange-950 border border-stone-100">
-                        <i class="fa fa-plus text-xs"></i>
-                    </div>
+                    <div class="bg-stone-50 w-11 h-11 rounded-2xl flex items-center justify-center text-orange-950 border border-stone-100"><i class="fa fa-plus text-xs"></i></div>
                 </div>`).join('');
-        }
-
-        // ADMIN FUNCTIONS
-        function loadAdminPrices() {
-            const saved = localStorage.getItem('barbosa_prices');
-            if(saved) {
-                const prices = JSON.parse(saved);
-                PRODUTOS.forEach(p => { if(prices[p.id]) p.price = prices[p.id]; });
-            }
-        }
-
-        function openAdmin() {
-            if(prompt("Senha:") === "123") {
-                const list = document.getElementById('admin-list');
-                list.innerHTML = PRODUTOS.map(p => `
-                    <div class="bg-white/10 p-4 rounded-xl flex justify-between items-center gap-4">
-                        <span class="text-white text-[10px] uppercase font-bold flex-1">${p.name}</span>
-                        <input type="number" step="0.5" data-id="${p.id}" value="${p.price}" 
-                               class="admin-price-input w-24 bg-black text-white p-2 rounded border border-white/20 font-bold">
-                    </div>
-                `).join('');
-                document.getElementById('admin-modal').classList.remove('hidden');
-            }
-        }
-
-        function saveAdminPrices() {
-            const inputs = document.querySelectorAll('.admin-price-input');
-            const prices = {};
-            inputs.forEach(input => {
-                const id = parseInt(input.dataset.id);
-                const val = parseFloat(input.value);
-                prices[id] = val;
-                const prod = PRODUTOS.find(p => p.id === id);
-                if(prod) prod.price = val;
-            });
-            localStorage.setItem('barbosa_prices', JSON.stringify(prices));
-            renderMenu();
-            closeAdmin();
-            alert("Preços atualizados com sucesso!");
-        }
-
-        function closeAdmin() { document.getElementById('admin-modal').classList.add('hidden'); }
-
-        // CART LOGIC
-        function openItemModal(id) {
-            const p = PRODUTOS.find(x => x.id === id);
-            curItem = {...p, qty: 1};
-            document.getElementById('modal-item-title').innerText = p.name;
-            document.getElementById('modal-item-price').innerText = `R$ ${p.price.toFixed(2)}`;
-            document.getElementById('item-qty').innerText = "1";
-            document.getElementById('item-obs').value = "";
-            document.getElementById('item-modal').classList.remove('hidden');
-        }
-
-        function updateQty(v) {
-            curItem.qty = Math.max(1, curItem.qty + v);
-            document.getElementById('item-qty').innerText = curItem.qty;
-            document.getElementById('modal-item-price').innerText = `R$ ${(curItem.price * curItem.qty).toFixed(2)}`;
-        }
-
-        function confirmItem() {
-            const obs = document.getElementById('item-obs').value.trim();
-            cart.push({...curItem, obs, finalPrice: curItem.price * curItem.qty});
-            updateCartUI();
-            closeModal();
         }
 
         function updateCartUI() {
@@ -399,52 +281,77 @@
                 <div class="flex justify-between items-center bg-stone-50 p-4 rounded-2xl border">
                     <div class="text-left">
                         <p class="font-black text-xs uppercase">${item.qty}x ${item.name}</p>
-                        ${item.obs ? `<p class="text-[9px] text-orange-800 italic">Obs: ${item.obs}</p>` : ''}
                     </div>
                     <button onclick="removeItem(${i})" class="text-red-400 p-2"><i class="fa fa-trash-alt"></i></button>
                 </div>`).join('');
         }
 
-        function setPayment(m) { 
-            paymentMethod = m; 
-            document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`pay-${m === 'Cartão' ? 'Cartao' : m}`).classList.add('active');
-            document.getElementById('change-container').classList.toggle('hidden', m !== 'Dinheiro');
-        }
-
         function sendOrder() {
             const name = document.getElementById('cust-name').value;
+            const address = document.getElementById('cust-address').value;
             const delivery = document.getElementById('delivery-location').value;
             const change = document.getElementById('change-value').value;
-            if(!cart.length || !name || !paymentMethod || delivery === "0") return alert("Preencha todos os dados!");
+            if(!cart.length || !name || !address || !paymentMethod || delivery === "0") return alert("Preencha Nome, Endereço, Bairro e Pagamento!");
             
-            let msg = `*🍺 TERREIRO DO BARBOSA*\n👤 *Cliente:* ${name}\n💳 *Pagamento:* ${paymentMethod}\n`;
+            let msg = `*🍺 TERREIRO DO BARBOSA*\n👤 *Cliente:* ${name}\n🏠 *Endereço:* ${address}\n📍 *Bairro:* ${delivery}\n💳 *Pagamento:* ${paymentMethod}\n`;
             if(paymentMethod === 'Dinheiro' && change) msg += `💵 *Troco para:* R$ ${change}\n`;
-            msg += `📍 *Local:* ${delivery}\n----------------------------\n`;
+            msg += `----------------------------\n`;
             cart.forEach(i => msg += `*${i.qty}x ${i.name.toUpperCase()}* ${i.obs ? `\n   _Obs: ${i.obs}_` : ''}\n`);
             msg += `----------------------------\n*TOTAL: ${document.getElementById('cart-total').innerText}*`;
             window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`);
         }
 
+        function openAdmin() { if(prompt("Senha:") === "123") { renderAdminList(); document.getElementById('admin-modal').classList.remove('hidden'); } }
+        function renderAdminList() {
+            document.getElementById('admin-list').innerHTML = PRODUTOS.map(p => `
+                <div class="bg-white/10 p-4 rounded-xl flex justify-between items-center gap-4">
+                    <span class="text-white text-[10px] uppercase font-bold flex-1">${p.name}</span>
+                    <input type="number" step="0.5" data-id="${p.id}" value="${p.price}" class="admin-price-input w-24 bg-black text-white p-2 rounded border border-white/20 font-bold">
+                </div>`).join('');
+        }
+        function saveAdminPrices() {
+            const prices = {};
+            document.querySelectorAll('.admin-price-input').forEach(input => {
+                const id = parseInt(input.dataset.id);
+                const val = parseFloat(input.value);
+                prices[id] = val;
+                const prod = PRODUTOS.find(p => p.id === id);
+                if(prod) prod.price = val;
+            });
+            localStorage.setItem('barbosa_prices', JSON.stringify(prices));
+            renderMenu(); closeAdmin(); alert("Preços salvos!");
+        }
+        function loadAdminPrices() {
+            const saved = localStorage.getItem('barbosa_prices');
+            if(saved) {
+                const prices = JSON.parse(saved);
+                PRODUTOS.forEach(p => { if(prices[p.id]) p.price = prices[p.id]; });
+            }
+        }
         function renderDeliveryOptions() {
             const select = document.getElementById('delivery-location');
             TAXAS_ENTREGA.forEach(t => {
                 const opt = document.createElement('option');
                 opt.value = t.bairro; opt.setAttribute('data-fee', t.taxa);
-                opt.innerText = `${t.bairro} - R$ ${t.taxa.toFixed(2)}`;
+                opt.innerText = `${t.bairro} - Taxa: R$ ${t.taxa.toFixed(2)}`;
                 select.appendChild(opt);
             });
         }
-
-        function filterCategory(cat) {
-            renderMenu(cat);
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.className = "cat-btn px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider");
-            event.currentTarget.className = "cat-btn px-6 py-2 rounded-xl bg-orange-950 text-white text-xs font-bold uppercase tracking-wider shadow-md";
+        function filterCategory(cat) { renderMenu(cat); }
+        function openItemModal(id) {
+            const p = PRODUTOS.find(x => x.id === id);
+            curItem = {...p, qty: 1};
+            document.getElementById('modal-item-title').innerText = p.name;
+            document.getElementById('modal-item-price').innerText = `R$ ${p.price.toFixed(2)}`;
+            document.getElementById('item-modal').classList.remove('hidden');
         }
-
+        function updateQty(v) { curItem.qty = Math.max(1, curItem.qty + v); document.getElementById('item-qty').innerText = curItem.qty; document.getElementById('modal-item-price').innerText = `R$ ${(curItem.price * curItem.qty).toFixed(2)}`; }
+        function confirmItem() { cart.push({...curItem, obs: document.getElementById('item-obs').value, finalPrice: curItem.price * curItem.qty}); updateCartUI(); closeModal(); }
         function closeModal() { document.getElementById('item-modal').classList.add('hidden'); }
         function toggleCartModal(s) { document.getElementById('cart-modal').classList.toggle('hidden', !s); }
         function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
+        function setPayment(m) { paymentMethod = m; document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active')); document.getElementById(`pay-${m === 'Cartão' ? 'Cartao' : m}`).classList.add('active'); document.getElementById('change-container').classList.toggle('hidden', m !== 'Dinheiro'); }
+        function closeAdmin() { document.getElementById('admin-modal').classList.add('hidden'); }
         function searchProduct() { renderMenu('todas'); }
         function shareMenu() { if (navigator.share) navigator.share({ title: 'Terreiro do Barbosa', url: window.location.href }); }
     </script>
