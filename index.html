@@ -43,26 +43,16 @@
         .product-img { width: 80px; height: 80px; border-radius: 1rem; object-fit: cover; }
 
         .banner-container { 
-            width: 85%; 
-            max-width: 280px; 
-            height: 90px;    
-            margin: 15px auto; 
-            overflow: hidden; 
-            border-radius: 12px; 
-            position: relative; 
+            width: 85%; max-width: 280px; height: 90px; margin: 15px auto; 
+            overflow: hidden; border-radius: 12px; position: relative; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
         }
         .banner-wrapper { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
         .banner-slide { min-width: 100%; height: 100%; position: relative; }
         .banner-slide img { width: 100%; height: 100%; object-fit: cover; }
         .banner-text { 
-            position: absolute; 
-            bottom: 6px; 
-            left: 10px; 
-            color: white; 
-            font-weight: 800; 
-            font-size: 10px; 
-            text-transform: uppercase;
+            position: absolute; bottom: 6px; left: 10px; color: white; 
+            font-weight: 800; font-size: 10px; text-transform: uppercase;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8); 
         }
     </style>
@@ -105,18 +95,9 @@
 
     <div class="banner-container">
         <div class="banner-wrapper" id="banner-slider">
-            <div class="banner-slide">
-                <img src="https://images.unsplash.com/photo-1594433036440-422072175782?q=80&w=600" alt="Feijoada">
-                <p class="banner-text">Feijoada aos Sábados</p>
-            </div>
-            <div class="banner-slide">
-                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" alt="Churrasco">
-                <p class="banner-text">Churrasco na Brasa</p>
-            </div>
-            <div class="banner-slide">
-                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600" alt="Bebidas">
-                <p class="banner-text">Drinks Gelados</p>
-            </div>
+            <div class="banner-slide"><img src="https://images.unsplash.com/photo-1594433036440-422072175782?q=80&w=600"><p class="banner-text">Feijoada aos Sábados</p></div>
+            <div class="banner-slide"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600"><p class="banner-text">Churrasco na Brasa</p></div>
+            <div class="banner-slide"><img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600"><p class="banner-text">Drinks Gelados</p></div>
         </div>
     </div>
 
@@ -131,33 +112,38 @@
 
     <div class="max-w-4xl mx-auto px-4 mt-6">
         <div class="relative">
-            <input type="text" id="search-input" oninput="searchProduct()" placeholder="Buscar no cardápio..." 
-                   class="w-full bg-white border-2 border-stone-100 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-orange-800 transition-all shadow-sm font-medium">
+            <input type="text" id="search-input" oninput="searchProduct()" placeholder="Buscar no cardápio..." class="w-full bg-white border-2 border-stone-100 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-orange-800 transition-all shadow-sm font-medium">
             <i class="fa fa-search absolute left-5 top-1/2 -translate-y-1/2 text-stone-300"></i>
         </div>
     </div>
 
     <main class="max-w-4xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-4" id="menu-container"></main>
 
+    <div id="admin-modal" class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-white w-full max-w-xl rounded-[2.5rem] max-h-[85vh] flex flex-col p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h2 class="text-xl font-bold uppercase">Painel de Preços</h2>
+                <button onclick="closeAdmin()" class="text-stone-400 text-3xl">&times;</button>
+            </div>
+            <div id="admin-list" class="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-hide"></div>
+            <button onclick="closeAdmin()" class="w-full bg-orange-950 text-white font-bold py-4 rounded-2xl mt-6 uppercase">Salvar e Fechar</button>
+        </div>
+    </div>
+
     <div id="item-modal" class="fixed inset-0 bg-black/80 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative">
             <button onclick="closeModal()" class="absolute top-4 right-6 text-stone-300 text-3xl">&times;</button>
             <div id="modal-img-container" class="mb-4"></div>
-            <h2 id="modal-item-title" class="font-bold text-2xl uppercase text-stone-800 mb-1 pr-8 leading-tight">ITEM</h2>
-            <div id="modal-item-price" class="text-xl font-black text-green-600 mb-6 tracking-tight">R$ 0,00</div>
-            
+            <h2 id="modal-item-title" class="font-bold text-2xl uppercase text-stone-800 mb-1 pr-8 leading-tight"></h2>
+            <div id="modal-item-price" class="text-xl font-black text-green-600 mb-6 tracking-tight"></div>
             <label class="font-bold text-[10px] text-stone-400 uppercase mb-2 block tracking-widest">Observações</label>
             <textarea id="item-obs" class="w-full border-2 border-stone-50 rounded-xl p-4 h-28 outline-none focus:border-orange-900 resize-none font-medium bg-stone-50/50" placeholder="Ex: Gelo e limão à parte..."></textarea>
-            
             <div class="flex items-center justify-center mt-8 mb-8 gap-8">
-                <button onclick="updateQty(-1)" class="bg-stone-100 w-14 h-14 rounded-2xl font-bold text-2xl active:scale-90 transition-all">-</button>
+                <button onclick="updateQty(-1)" class="bg-stone-100 w-14 h-14 rounded-2xl font-bold text-2xl">-</button>
                 <div id="item-qty" class="text-2xl font-black w-6 text-center">1</div>
-                <button onclick="updateQty(1)" class="bg-stone-100 w-14 h-14 rounded-2xl font-bold text-2xl active:scale-90 transition-all">+</button>
+                <button onclick="updateQty(1)" class="bg-stone-100 w-14 h-14 rounded-2xl font-bold text-2xl">+</button>
             </div>
-
-            <button onclick="confirmItem()" class="w-full bg-orange-950 text-white font-bold py-5 rounded-2xl uppercase tracking-widest shadow-xl active:scale-95 transition-all">
-                Adicionar ao Pedido
-            </button>
+            <button onclick="confirmItem()" class="w-full bg-orange-950 text-white font-bold py-5 rounded-2xl uppercase shadow-xl">Adicionar ao Pedido</button>
         </div>
     </div>
 
@@ -167,48 +153,29 @@
                 <span class="text-[9px] text-stone-400 uppercase font-black tracking-widest">Total com Entrega</span>
                 <p class="text-2xl font-black text-orange-950" id="cart-total">R$ 0,00</p>
             </div>
-            <button onclick="toggleCartModal(true)" class="bg-orange-950 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3 shadow-lg active:scale-95 transition-all">
-                Ver Pedido <i class="fa fa-receipt text-xs opacity-40"></i>
-            </button>
+            <button onclick="toggleCartModal(true)" class="bg-orange-950 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3">Ver Pedido <i class="fa fa-receipt text-xs opacity-40"></i></button>
         </div>
-        
-        <div class="text-center pt-3 border-t border-stone-100 flex justify-center items-center gap-4">
-            <span class="text-[10px] font-black text-stone-400 uppercase tracking-tighter">Desenvolvido por @lu4ncarlos</span>
-            <a href="https://www.instagram.com/lu4ncarlos" target="_blank" class="text-pink-600 text-lg hover:scale-110 transition-transform">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </div>
+        <div class="text-center pt-3 border-t border-stone-100 text-[10px] font-black text-stone-400 uppercase">Desenvolvido por @lu4ncarlos</div>
     </footer>
 
     <div id="cart-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-md">
         <div class="bg-white w-full max-w-lg rounded-[2.5rem] max-h-[90vh] flex flex-col p-6 shadow-2xl relative">
             <button onclick="toggleCartModal(false)" class="absolute top-5 right-6 text-stone-300 text-4xl">&times;</button>
             <h2 class="text-2xl font-serif font-bold mb-6 border-b pb-4">Meu Pedido</h2>
-            
-            <div id="cart-items" class="flex-1 overflow-y-auto space-y-3 pr-1 scrollbar-hide mb-6"></div>
-
+            <div id="cart-items" class="flex-1 overflow-y-auto space-y-3 mb-6 scrollbar-hide"></div>
             <div class="bg-stone-50 p-5 rounded-3xl border border-stone-100 mb-6">
-                <label class="font-bold text-[10px] uppercase text-stone-400 tracking-widest block mb-2">Bairro de Entrega</label>
-                <select id="delivery-location" onchange="updateCartUI()" class="w-full rounded-xl p-4 bg-white border-2 border-stone-100 font-bold outline-none focus:border-orange-950">
-                    <option value="0" data-fee="0">Selecione onde entregar...</option>
-                </select>
+                <label class="font-bold text-[10px] uppercase text-stone-400 block mb-2">Bairro de Entrega</label>
+                <select id="delivery-location" onchange="updateCartUI()" class="w-full rounded-xl p-4 bg-white border-2 border-stone-100 font-bold outline-none"></select>
             </div>
-
             <div class="space-y-3">
                 <div class="grid grid-cols-3 gap-2">
-                    <button onclick="setPayment('Pix')" id="pay-Pix" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Pix</button>
-                    <button onclick="setPayment('Cartão')" id="pay-Cartao" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Cartão</button>
-                    <button onclick="setPayment('Dinheiro')" id="pay-Dinheiro" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Dinheiro</button>
+                    <button onclick="setPayment('Pix')" id="pay-Pix" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase">Pix</button>
+                    <button onclick="setPayment('Cartão')" id="pay-Cartao" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase">Cartão</button>
+                    <button onclick="setPayment('Dinheiro')" id="pay-Dinheiro" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase">Dinheiro</button>
                 </div>
-                
-                <div id="troco-container" class="hidden">
-                    <input type="text" id="input-troco" placeholder="Troco para quanto?" class="w-full border-2 border-green-100 rounded-xl p-4 font-bold outline-none focus:border-green-600 bg-green-50/50">
-                </div>
-
-                <input type="text" id="cust-name" placeholder="Seu Nome / Mesa" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none focus:border-orange-950">
-                <button onclick="sendOrder()" class="w-full bg-green-600 text-white font-bold py-5 rounded-2xl text-lg shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
-                    Enviar Pedido <i class="fab fa-whatsapp text-xl"></i>
-                </button>
+                <div id="troco-container" class="hidden"><input type="text" id="input-troco" placeholder="Troco para quanto?" class="w-full border-2 border-green-100 rounded-xl p-4 font-bold bg-green-50/50"></div>
+                <input type="text" id="cust-name" placeholder="Seu Nome / Mesa" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none">
+                <button onclick="sendOrder()" class="w-full bg-green-600 text-white font-bold py-5 rounded-2xl text-lg flex items-center justify-center gap-3">Enviar Pedido <i class="fab fa-whatsapp"></i></button>
             </div>
         </div>
     </div>
@@ -216,7 +183,7 @@
     <script>
         const WHATSAPP_NUMBER = "5588992791644";
         
-        const PRODUTOS = [
+        let PRODUTOS = [
             { id: 1, cat: 'entradas', name: "Batata frita", price: 16.00, desc: "Porção crocante tradicional", img: "" },
             { id: 2, cat: 'entradas', name: "Batata recheada", price: 20.00, desc: "Cheddar, queijo e bacon", img: "" },
             { id: 3, cat: 'entradas', name: "Macaxeira frita", price: 16.00, desc: "Porção bem crocante", img: "" },
@@ -246,19 +213,12 @@
             { id: 27, cat: 'churrasco', name: "Misto", price: 55.00, desc: "Boi, porco, linguiça e frango", img: "" },
             { id: 28, cat: 'principais', name: "Baião de dois", price: 14.00, desc: "Tradicional", img: "" },
             { id: 29, cat: 'principais', name: "Baião cremoso", price: 20.00, desc: "Com queijo e nata", img: "" },
-            { id: 30, cat: 'principais', name: "Feijoada Completa", price: 30.00, desc: "Arroz, bisteca, torresmo, vinagrete e laranja", img: "" },
-            { id: 31, cat: 'bebidas', name: "Coca-Cola 1L", price: 10.00, desc: "Garrafa", img: "" },
-            { id: 32, cat: 'bebidas', name: "Coca Zero 1L", price: 10.00, desc: "Garrafa", img: "" },
-            { id: 33, cat: 'bebidas', name: "Cajuína 1L", price: 10.00, desc: "Tradicional", img: "" },
-            { id: 34, cat: 'bebidas', name: "Guaraná 1L", price: 10.00, desc: "Garrafa", img: "" },
-            { id: 35, cat: 'bebidas', name: "Fanta 1L", price: 10.00, desc: "Laranja", img: "" },
-            { id: 36, cat: 'bebidas', name: "Lata 350ml", price: 5.00, desc: "Coca/Zero/Cajuína/Guaraná", img: "" },
-            { id: 37, cat: 'bebidas', name: "Red Bull", price: 12.00, desc: "Energético", img: "" },
-            { id: 38, cat: 'bebidas', name: "TNT", price: 10.00, desc: "Energético", img: "" },
-            { id: 39, cat: 'bebidas', name: "Dose Ypióca", price: 4.00, desc: "Ouro/Prata", img: "" },
+            { id: 30, cat: 'principais', name: "Feijoada Completa", price: 30.00, desc: "Sáb e Dom", img: "" },
+            { id: 31, cat: 'bebidas', name: "Refrigerante 1L", price: 10.00, desc: "Coca/Guaraná/Fanta", img: "" },
+            { id: 36, cat: 'bebidas', name: "Lata 350ml", price: 5.00, desc: "Diversos", img: "" },
             { id: 45, cat: 'bebidas', name: "Cerveja 600ml", price: 9.00, desc: "Skol/Brahma/Itaipava", img: "" },
             { id: 49, cat: 'bebidas', name: "Heineken 600ml", price: 15.00, desc: "Garrafa", img: "" },
-            { id: 50, cat: 'drinks', name: "Barbosa Gim", price: 20.00, desc: "Especial da casa", img: "" },
+            { id: 50, cat: 'drinks', name: "Barbosa Gim", price: 20.00, desc: "Especial", img: "" },
             { id: 53, cat: 'drinks', name: "Caipirinha", price: 15.00, desc: "Limão ou Maracujá", img: "" }
         ];
 
@@ -271,7 +231,6 @@
         let cart = [];
         let curItem = null;
         let paymentMethod = "";
-        let isForcedOpen = null;
 
         window.onload = () => {
             checkStatus();
@@ -281,87 +240,86 @@
             setTimeout(() => { 
                 document.getElementById('splash-screen').style.opacity = '0'; 
                 setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800); 
-            }, 2500);
+            }, 2000);
         };
 
-        // --- PAINEL ADMINISTRATIVO CORRIGIDO ---
+        // --- PAINEL DE PREÇOS ---
         function openAdmin() {
-            const pass = prompt("Digite a senha administrativa:");
-            if (pass === "1234") { // Você pode alterar essa senha
-                const acao = confirm("Deseja alterar o status da loja?\nOK para ABERTO\nCancelar para FECHADO");
-                isForcedOpen = acao;
-                alert("Status atualizado para esta sessão.");
-                checkStatus();
-            } else if (pass !== null) {
-                alert("Senha incorreta!");
+            const pass = prompt("Senha Administrativa:");
+            if(pass === "1234") {
+                const modal = document.getElementById('admin-modal');
+                const list = document.getElementById('admin-list');
+                list.innerHTML = PRODUTOS.map(p => `
+                    <div class="flex items-center justify-between bg-stone-50 p-4 rounded-2xl border">
+                        <span class="text-xs font-bold uppercase truncate pr-4">${p.name}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-stone-400">R$</span>
+                            <input type="number" step="0.50" value="${p.price}" 
+                                onchange="updateProductPrice(${p.id}, this.value)"
+                                class="w-20 p-2 rounded-lg border-2 border-stone-200 font-bold text-center outline-none focus:border-orange-800">
+                        </div>
+                    </div>
+                `).join('');
+                modal.classList.remove('hidden');
+            } else if(pass !== null) alert("Acesso Negado!");
+        }
+
+        function updateProductPrice(id, newVal) {
+            const p = PRODUTOS.find(x => x.id === id);
+            if(p) {
+                p.price = parseFloat(newVal);
+                renderMenu(); // Atualiza o cardápio no fundo
             }
         }
 
+        function closeAdmin() { document.getElementById('admin-modal').classList.add('hidden'); }
+
+        // --- LÓGICA DE STATUS AUTOMÁTICO ---
         function checkStatus() {
             const agora = new Date();
             const dia = agora.getDay(); 
             const hora = agora.getHours();
             let aberto = false;
+            let info = "";
+
+            if (dia === 5) { info = "16h às 00h"; if (hora >= 16) aberto = true; }
+            else if (dia === 6) { info = "12h às 00h"; if (hora >= 12) aberto = true; }
+            else if (dia === 0) { info = "12h às 22h"; if (hora >= 12 && hora < 22) aberto = true; }
+            else { info = "Fechado Hoje"; }
+
+            const dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+            document.getElementById('horario-texto').innerText = `${dias[dia]} • ${info}`;
             
-            const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-            let horarioInfo = "";
-
-            // Lógica de horário original
-            if (dia === 5) { horarioInfo = "16h às 00h"; if (hora >= 16) aberto = true; }
-            else if (dia === 6) { horarioInfo = "12h às 00h"; if (hora >= 12) aberto = true; }
-            else if (dia === 0) { horarioInfo = "12h às 22h"; if (hora >= 12 && hora < 22) aberto = true; }
-            else { horarioInfo = "Fechado hoje"; }
-
-            // Sobrescrita pelo painel admin
-            if (isForcedOpen !== null) aberto = isForcedOpen;
-
-            document.getElementById('horario-texto').innerText = `${diasSemana[dia]} • ${horarioInfo}`;
             const div = document.getElementById('status-loja');
-            const logo = document.getElementById('logo-loja');
             const txt = document.getElementById('status-texto');
+            const logo = document.getElementById('logo-loja');
 
             if(aberto) {
                 div.className = "mt-2 text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-2 bg-green-600 animate-pulse-green mx-auto w-fit";
-                logo.className = "w-24 h-24 rounded-full object-cover border-4 animate-pulse-green mx-auto mb-3 shadow-2xl";
-                txt.innerText = isForcedOpen !== null ? "Aberto (Manual)" : "Aberto Agora";
+                logo.style.borderColor = "#22c55e";
+                txt.innerText = "Aberto Agora";
             } else {
                 div.className = "mt-2 text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-2 bg-red-600 animate-pulse-red mx-auto w-fit";
-                logo.className = "w-24 h-24 rounded-full object-cover border-4 animate-pulse-red mx-auto mb-3 shadow-2xl";
+                logo.style.borderColor = "#ef4444";
                 txt.innerText = "Fechado";
             }
         }
 
+        // --- RENDERIZAÇÃO E CARRINHO ---
         function renderMenu(cat = 'todas') {
+            const term = document.getElementById('search-input').value.toLowerCase();
             const container = document.getElementById('menu-container');
-            const filtered = PRODUTOS.filter(p => cat === 'todas' || p.cat === cat);
-            renderList(filtered);
-        }
-
-        function renderList(list) {
-            const container = document.getElementById('menu-container');
-            container.innerHTML = list.map(p => `
+            const filtered = PRODUTOS.filter(p => (cat === 'todas' || p.cat === cat) && p.name.toLowerCase().includes(term));
+            
+            container.innerHTML = filtered.map(p => `
                 <div onclick="openItemModal(${p.id})" class="bg-white p-4 rounded-3xl shadow-sm border-2 border-transparent hover:border-orange-50 flex justify-between items-center cursor-pointer active:scale-95 transition-all">
                     <div class="text-left flex-1 pr-4">
-                        <h3 class="font-bold text-sm uppercase text-stone-700 tracking-tight">${p.name}</h3>
+                        <h3 class="font-bold text-sm uppercase text-stone-700">${p.name}</h3>
                         <p class="text-[10px] text-stone-400 mt-1 line-clamp-1">${p.desc}</p>
                         <p class="font-black text-orange-900 text-lg mt-2">R$ ${p.price.toFixed(2)}</p>
                     </div>
-                    ${p.img ? `<img src="${p.img}" class="product-img ml-2">` : `<div class="bg-stone-50 w-12 h-12 rounded-2xl flex items-center justify-center text-orange-950 border border-stone-100"><i class="fa fa-plus text-sm"></i></div>`}
+                    <div class="bg-stone-50 w-12 h-12 rounded-2xl flex items-center justify-center text-orange-950 border border-stone-100"><i class="fa fa-plus text-sm"></i></div>
                 </div>`).join('');
-        }
-
-        function searchProduct() {
-            const term = document.getElementById('search-input').value.toLowerCase();
-            const filtered = PRODUTOS.filter(p => p.name.toLowerCase().includes(term));
-            renderList(filtered);
-        }
-
-        function filterCategory(cat) {
-            renderMenu(cat);
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.className = "cat-btn px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider";
-            });
-            event.currentTarget.className = "cat-btn px-6 py-2 rounded-xl bg-orange-950 text-white text-xs font-bold uppercase tracking-wider shadow-md";
         }
 
         function openItemModal(id) {
@@ -371,8 +329,6 @@
             document.getElementById('modal-item-price').innerText = `R$ ${p.price.toFixed(2)}`;
             document.getElementById('item-qty').innerText = "1";
             document.getElementById('item-obs').value = "";
-            const imgContainer = document.getElementById('modal-img-container');
-            imgContainer.innerHTML = p.img ? `<img src="${p.img}" class="w-full h-48 object-cover rounded-2xl mb-4">` : '';
             document.getElementById('item-modal').classList.remove('hidden');
         }
 
@@ -383,67 +339,41 @@
         }
 
         function confirmItem() {
-            const obsValue = document.getElementById('item-obs').value.trim();
-            cart.push({...curItem, obs: obsValue, finalPrice: curItem.price * curItem.qty});
+            cart.push({...curItem, obs: document.getElementById('item-obs').value, finalPrice: curItem.price * curItem.qty});
             updateCartUI();
             closeModal();
         }
 
         function updateCartUI() {
             const select = document.getElementById('delivery-location');
-            const fee = parseFloat(select.options[select.selectedIndex].getAttribute('data-fee') || 0);
+            const fee = parseFloat(select.options[select.selectedIndex]?.getAttribute('data-fee') || 0);
             const subtotal = cart.reduce((acc, cur) => acc + cur.finalPrice, 0);
             document.getElementById('cart-total').innerText = `R$ ${(subtotal + fee).toFixed(2)}`;
             document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
-                <div class="flex justify-between items-center bg-stone-50 p-4 rounded-2xl border-2 border-stone-100">
+                <div class="flex justify-between items-center bg-stone-50 p-4 rounded-2xl border">
                     <div class="text-left">
-                        <p class="font-black text-xs uppercase text-stone-800">${item.qty}x ${item.name}</p>
-                        ${item.obs ? `<p class="text-[10px] text-orange-800 italic font-bold">"${item.obs}"</p>` : ''}
-                        <p class="font-bold text-stone-500 mt-1 text-xs">R$ ${item.finalPrice.toFixed(2)}</p>
+                        <p class="font-black text-xs uppercase">${item.qty}x ${item.name}</p>
+                        <p class="font-bold text-stone-500 text-xs">R$ ${item.finalPrice.toFixed(2)}</p>
                     </div>
                     <button onclick="removeItem(${i})" class="text-red-400 p-2"><i class="fa fa-trash-alt"></i></button>
                 </div>`).join('');
         }
 
         function sendOrder() {
-            const name = document.getElementById('cust-name').value.trim();
-            const deliverySelect = document.getElementById('delivery-location');
-            const troco = document.getElementById('input-troco').value.trim();
-            const fee = parseFloat(deliverySelect.options[deliverySelect.selectedIndex].getAttribute('data-fee'));
-            
-            if(!cart.length) return alert("Seu carrinho está vazio!");
-            if(!name || !paymentMethod || deliverySelect.value === "0") return alert("Preencha Nome, Pagamento e Bairro!");
+            const name = document.getElementById('cust-name').value;
+            const loc = document.getElementById('delivery-location');
+            if(!cart.length || !name || paymentMethod === "" || loc.value === "0") return alert("Complete os dados!");
 
-            let msg = `*🍺 TERREIRO DO BARBOSA*\n`;
-            msg += `👤 *Cliente:* ${name}\n`;
-            msg += `💳 *Pagamento:* ${paymentMethod}\n`;
-            if(paymentMethod === 'Dinheiro' && troco) msg += `💵 *Troco para:* R$ ${troco}\n`;
-            msg += `📍 *Local:* ${deliverySelect.value}\n`;
-            msg += `----------------------------\n`;
-            cart.forEach(i => {
-                msg += `*${i.qty}x ${i.name.toUpperCase()}*\n`;
-                if(i.obs) msg += `_Obs: ${i.obs}_\n`;
-                msg += `R$ ${i.finalPrice.toFixed(2)}\n\n`;
-            });
-            const subtotal = cart.reduce((acc, cur) => acc + cur.finalPrice, 0);
-            msg += `----------------------------\n`;
-            msg += `*TOTAL FINAL: R$ ${(subtotal + fee).toFixed(2)}*`;
+            let msg = `*🍺 TERREIRO DO BARBOSA*\n👤 *Cliente:* ${name}\n💳 *Pagamento:* ${paymentMethod}\n📍 *Local:* ${loc.value}\n----------------------------\n`;
+            cart.forEach(i => msg += `*${i.qty}x ${i.name.toUpperCase()}* - R$ ${i.finalPrice.toFixed(2)}\n${i.obs ? `_Obs: ${i.obs}_\n` : ''}\n`);
+            msg += `----------------------------\n*TOTAL: ${document.getElementById('cart-total').innerText}*`;
             window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`);
         }
 
-        function closeModal() { document.getElementById('item-modal').classList.add('hidden'); }
-        function toggleCartModal(s) { document.getElementById('cart-modal').classList.toggle('hidden', !s); }
-        function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
-
         function renderDeliveryOptions() {
             const select = document.getElementById('delivery-location');
-            TAXAS_ENTREGA.forEach(t => {
-                const opt = document.createElement('option');
-                opt.value = t.bairro;
-                opt.setAttribute('data-fee', t.taxa);
-                opt.innerText = `${t.bairro} - R$ ${t.taxa.toFixed(2)}`;
-                select.appendChild(opt);
-            });
+            select.innerHTML = `<option value="0" data-fee="0">Selecione o Bairro...</option>` + 
+                TAXAS_ENTREGA.map(t => `<option value="${t.bairro}" data-fee="${t.taxa}">${t.bairro} - R$ ${t.taxa.toFixed(2)}</option>`).join('');
         }
 
         function setPayment(m) { 
@@ -453,20 +383,22 @@
             document.getElementById('troco-container').classList.toggle('hidden', m !== 'Dinheiro');
         }
 
+        function filterCategory(cat) { 
+            renderMenu(cat); 
+            document.querySelectorAll('.cat-btn').forEach(b => b.className = "cat-btn px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase");
+            event.currentTarget.className = "cat-btn px-6 py-2 rounded-xl bg-orange-950 text-white text-xs font-bold uppercase shadow-md";
+        }
+        
+        function searchProduct() { renderMenu(); }
+        function closeModal() { document.getElementById('item-modal').classList.add('hidden'); }
+        function toggleCartModal(s) { document.getElementById('cart-modal').classList.toggle('hidden', !s); }
+        function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
         function initBanner() {
             const slider = document.getElementById('banner-slider');
             let index = 0;
-            setInterval(() => {
-                index = (index + 1) % 3;
-                slider.style.transform = `translateX(-${index * 100}%)`;
-            }, 4000);
+            setInterval(() => { index = (index + 1) % 3; slider.style.transform = `translateX(-${index * 100}%)`; }, 4000);
         }
-
-        function shareMenu() {
-            if (navigator.share) {
-                navigator.share({ title: 'Terreiro do Barbosa', text: 'Confira nosso cardápio!', url: window.location.href });
-            }
-        }
+        function shareMenu() { if(navigator.share) navigator.share({title:'Barbosa', url:window.location.href}); }
     </script>
 </body>
 </html>
