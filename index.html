@@ -19,21 +19,18 @@
             background-position: center;
         }
 
-        /* Splash Screen */
         #splash-screen {
             position: fixed; inset: 0; background: #2d1610; z-index: 100;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
-        /* Animações de Pulso */
         @keyframes pulse-green {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); border-color: rgba(34, 197, 94, 1); }
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); border-color: rgba(34, 197, 94, 0.5); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); border-color: rgba(34, 197, 94, 1); }
         }
         
-        /* Pulso Vinho */
         @keyframes pulse-wine {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(128, 0, 32, 0.7); border-color: #800020; }
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(128, 0, 32, 0); border-color: rgba(128, 0, 32, 0.5); }
@@ -42,16 +39,13 @@
 
         .animate-pulse-green { animation: pulse-green 2s infinite; }
         .animate-pulse-wine { animation: pulse-wine 2s infinite; }
-        
         .payment-btn.active { background-color: #5d2906 !important; color: white !important; border-color: #5d2906 !important; }
     </style>
 </head>
 <body class="text-stone-900 pb-44">
 
     <div id="splash-screen">
-        <img src="https://i.imgur.com/zKOhMDm.jpeg" 
-             class="w-32 h-32 rounded-full border-4 shadow-2xl mb-6 animate-pulse-wine" 
-             style="border-color: #800020;">
+        <img src="https://i.imgur.com/zKOhMDm.jpeg" class="w-32 h-32 rounded-full border-4 shadow-2xl mb-6 animate-pulse-wine" style="border-color: #800020;">
         <div class="text-center">
             <p class="text-stone-300 uppercase tracking-[0.3em] text-[10px] mb-1">Bem-vindo ao</p>
             <h2 class="text-white text-2xl font-serif font-bold">Cardápio do Barbosa</h2>
@@ -139,27 +133,35 @@
         </div>
     </div>
 
-    <div id="cart-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-md">
-        <div class="bg-white w-full max-w-lg rounded-[2.5rem] max-h-[90vh] flex flex-col p-6 shadow-2xl relative">
-            <button onclick="toggleCartModal(false)" class="absolute top-5 right-6 text-stone-300 text-4xl">&times;</button>
-            <h2 class="text-2xl font-serif font-bold mb-6 border-b pb-4">Meu Pedido</h2>
-            <div id="cart-items" class="flex-1 overflow-y-auto space-y-3 pr-1 scrollbar-hide mb-6"></div>
-            <div class="bg-stone-50 p-5 rounded-3xl border border-stone-100 mb-6 space-y-4">
-                <select id="delivery-location" onchange="updateCartUI()" class="w-full rounded-xl p-4 bg-white border-2 border-stone-100 font-bold outline-none">
+    <div id="cart-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-2 backdrop-blur-md">
+        <div class="bg-white w-full max-w-lg rounded-[2rem] max-h-[95vh] flex flex-col p-4 shadow-2xl relative">
+            <button onclick="toggleCartModal(false)" class="absolute top-3 right-5 text-stone-300 text-4xl">&times;</button>
+            
+            <h2 class="text-xl font-serif font-bold mb-4 border-b pb-2">Meu Pedido</h2>
+            
+            <div id="cart-items" class="flex-1 overflow-y-auto space-y-2 pr-1 scrollbar-hide mb-4 min-h-[150px]">
+                </div>
+
+            <div class="bg-stone-50 p-3 rounded-2xl border border-stone-100 space-y-3">
+                <select id="delivery-location" onchange="updateCartUI()" class="w-full rounded-xl p-3 bg-white border-2 border-stone-100 font-bold text-sm outline-none">
                     <option value="0" data-fee="0">Selecione o Bairro...</option>
                 </select>
+                
                 <div class="grid grid-cols-3 gap-2">
-                    <button onclick="setPayment('Pix')" id="pay-Pix" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Pix</button>
-                    <button onclick="setPayment('Cartão')" id="pay-Cartao" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Cartão</button>
-                    <button onclick="setPayment('Dinheiro')" id="pay-Dinheiro" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Dinheiro</button>
+                    <button onclick="setPayment('Pix')" id="pay-Pix" class="payment-btn border-2 border-stone-100 rounded-xl py-2 text-[9px] font-bold uppercase transition-all">Pix</button>
+                    <button onclick="setPayment('Cartão')" id="pay-Cartao" class="payment-btn border-2 border-stone-100 rounded-xl py-2 text-[9px] font-bold uppercase transition-all">Cartão</button>
+                    <button onclick="setPayment('Dinheiro')" id="pay-Dinheiro" class="payment-btn border-2 border-stone-100 rounded-xl py-2 text-[9px] font-bold uppercase transition-all">Dinheiro</button>
                 </div>
+                
                 <div id="change-container" class="hidden">
-                    <input type="number" id="change-value" placeholder="Troco para quanto?" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none">
+                    <input type="number" id="change-value" placeholder="Troco para quanto?" class="w-full border-2 border-stone-100 rounded-xl p-3 text-sm font-bold outline-none">
                 </div>
-                <input type="text" id="cust-name" placeholder="Seu Nome" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none">
-                <input type="text" id="cust-address" placeholder="Endereço Completo (Rua, Nº, Ref)" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none">
+                
+                <input type="text" id="cust-name" placeholder="Seu Nome" class="w-full border-2 border-stone-100 rounded-xl p-3 text-sm font-bold outline-none">
+                <input type="text" id="cust-address" placeholder="Endereço Completo (Rua, Nº, Ref)" class="w-full border-2 border-stone-100 rounded-xl p-3 text-sm font-bold outline-none">
             </div>
-            <button onclick="sendOrder()" class="w-full bg-green-600 text-white font-bold py-5 rounded-2xl text-lg shadow-xl flex items-center justify-center gap-3">
+
+            <button onclick="sendOrder()" class="mt-4 w-full bg-green-600 text-white font-bold py-4 rounded-xl text-md shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
                 Enviar para o WhatsApp <i class="fab fa-whatsapp text-xl"></i>
             </button>
         </div>
@@ -297,13 +299,20 @@
             const fee = parseFloat(select.options[select.selectedIndex]?.getAttribute('data-fee') || 0);
             const sub = cart.reduce((acc, cur) => acc + cur.finalPrice, 0);
             document.getElementById('cart-total').innerText = `R$ ${(sub + fee).toFixed(2)}`;
-            document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
-                <div class="flex justify-between items-center bg-stone-50 p-4 rounded-2xl border">
-                    <div class="text-left">
-                        <p class="font-black text-xs uppercase">${item.qty}x ${item.name}</p>
-                    </div>
-                    <button onclick="removeItem(${i})" class="text-red-400 p-2"><i class="fa fa-trash-alt"></i></button>
-                </div>`).join('');
+            
+            const itemsContainer = document.getElementById('cart-items');
+            if(cart.length === 0) {
+                itemsContainer.innerHTML = `<p class="text-center text-stone-400 py-10 text-sm">Seu carrinho está vazio</p>`;
+            } else {
+                itemsContainer.innerHTML = cart.map((item, i) => `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-stone-100 shadow-sm">
+                        <div class="text-left">
+                            <p class="font-bold text-[11px] uppercase text-stone-800">${item.qty}x ${item.name}</p>
+                            <p class="text-[10px] text-orange-900 font-black">R$ ${item.finalPrice.toFixed(2)}</p>
+                        </div>
+                        <button onclick="removeItem(${i})" class="text-red-500 bg-red-50 w-8 h-8 rounded-lg flex items-center justify-center"><i class="fa fa-trash-alt text-xs"></i></button>
+                    </div>`).join('');
+            }
         }
 
         function sendOrder() {
@@ -369,7 +378,10 @@
         function updateQty(v) { curItem.qty = Math.max(1, curItem.qty + v); document.getElementById('item-qty').innerText = curItem.qty; document.getElementById('modal-item-price').innerText = `R$ ${(curItem.price * curItem.qty).toFixed(2)}`; }
         function confirmItem() { cart.push({...curItem, obs: document.getElementById('item-obs').value, finalPrice: curItem.price * curItem.qty}); updateCartUI(); closeModal(); }
         function closeModal() { document.getElementById('item-modal').classList.add('hidden'); }
-        function toggleCartModal(s) { document.getElementById('cart-modal').classList.toggle('hidden', !s); }
+        function toggleCartModal(s) { 
+            document.getElementById('cart-modal').classList.toggle('hidden', !s); 
+            if(s) updateCartUI();
+        }
         function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
         function setPayment(m) { paymentMethod = m; document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active')); document.getElementById(`pay-${m === 'Cartão' ? 'Cartao' : m}`).classList.add('active'); document.getElementById('change-container').classList.toggle('hidden', m !== 'Dinheiro'); }
         function closeAdmin() { document.getElementById('admin-modal').classList.add('hidden'); }
