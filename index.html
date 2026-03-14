@@ -19,6 +19,7 @@
             background-position: center;
         }
 
+        /* Splash Screen Ajustada */
         #splash-screen {
             position: fixed; inset: 0; background: #2d1610; z-index: 100;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -44,7 +45,11 @@
 <body class="text-stone-900 pb-44">
 
     <div id="splash-screen">
-        <img src="https://i.imgur.com/zKOhMDm.jpeg" class="w-24 h-24 rounded-full border-4 border-red-600 animate-bounce shadow-2xl">
+        <img src="https://i.imgur.com/zKOhMDm.jpeg" class="w-32 h-32 rounded-full border-4 border-red-600 animate-bounce shadow-2xl mb-6">
+        <div class="text-center">
+            <p class="text-stone-300 uppercase tracking-[0.3em] text-[10px] mb-1">Bem-vindo ao</p>
+            <h2 class="text-white text-2xl font-serif font-bold">Cardápio do Barbosa</h2>
+        </div>
     </div>
 
     <header class="w-full h-[320px] header-bg relative flex flex-col items-center justify-center shadow-inner">
@@ -233,7 +238,7 @@
             setTimeout(() => { 
                 document.getElementById('splash-screen').style.opacity = '0'; 
                 setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800); 
-            }, 2500);
+            }, 3000);
         };
 
         function checkStatus() {
