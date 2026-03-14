@@ -12,7 +12,7 @@
         h1, h2, .font-serif { font-family: 'Playfair Display', serif; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-        /* Imagem de Capa do Fundo - ATUALIZADA */
+        /* Imagem de Fundo Atualizada */
         .header-bg {
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
                         url('https://i.imgur.com/3aqQGlJ.jpeg');
@@ -26,7 +26,6 @@
             transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
-        /* Efeitos de Status (Aberto/Fechado) */
         @keyframes pulse-green {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
@@ -46,11 +45,11 @@
 <body class="text-stone-900 pb-44">
 
     <div id="splash-screen">
-        <img src="https://i.ibb.co/LzNfX6Xp/Whats-App-Image-2026-03-13-at-20-43-58.jpg" class="w-28 h-28 rounded-full border-4 border-yellow-700 mb-6 animate-bounce shadow-2xl">
-        <h2 class="text-white text-lg font-serif italic text-yellow-500 px-6 text-center max-w-sm leading-relaxed">
-            Sejam bem-vindos ao<br>
-            <span class="text-2xl font-bold uppercase tracking-widest text-white">Terreiro do Barbosa</span>
-        </h2>
+        <img src="https://i.ibb.co/LzNfX6Xp/Whats-App-Image-2026-03-13-at-20-43-58.jpg" class="w-24 h-24 rounded-full border-4 border-yellow-700 mb-6 animate-bounce shadow-2xl">
+        <div class="text-center px-6">
+            <p class="text-yellow-500 font-serif italic text-sm mb-1">Sejam bem-vindos ao</p>
+            <h2 class="text-white text-2xl font-bold uppercase tracking-[0.2em]">Terreiro do Barbosa</h2>
+        </div>
     </div>
 
     <header class="w-full h-[280px] header-bg relative flex flex-col items-center justify-center shadow-inner">
@@ -64,7 +63,7 @@
             <button onclick="shareMenu()" class="bg-black/30 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border border-white/20">
                 <i class="fas fa-share-alt"></i>
             </button>
-            <a href="https://www.instagram.com/terreirodobarbosa" target="_blank" class="bg-black/30 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border border-white/20">
+            <a href="https://www.instagram.com/terreiro_dobarbosa?igsh=MWlrNGNvZzFqd3p3aw==" target="_blank" class="bg-black/30 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border border-white/20">
                 <i class="fab fa-instagram"></i>
             </a>
         </div>
@@ -78,7 +77,7 @@
         </div>
     </header>
 
-    <nav class="sticky top-0 bg-white shadow-sm z-40 overflow-x-auto whitespace-nowrap p-4 flex gap-3 scrollbar-hide">
+    <nav class="sticky top-0 bg-white shadow-sm z-40 overflow-x-auto whitespace-nowrap p-4 flex gap-3 scrollbar-hide border-b border-stone-100">
         <button onclick="filterCategory('todas')" class="px-6 py-2 rounded-xl bg-orange-950 text-white text-xs font-bold uppercase tracking-wider shadow-md">Todas</button>
         <button onclick="filterCategory('entradas')" class="px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider">Entradas</button>
         <button onclick="filterCategory('churrasco')" class="px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider">Churrasco</button>
@@ -99,11 +98,11 @@
     <div id="item-modal" class="fixed inset-0 bg-black/80 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative">
             <button onclick="closeModal()" class="absolute top-4 right-6 text-stone-300 text-3xl">&times;</button>
-            <h2 id="modal-item-title" class="font-bold text-2xl uppercase text-stone-800 mb-1 pr-8">ITEM</h2>
+            <h2 id="modal-item-title" class="font-bold text-2xl uppercase text-stone-800 mb-1 pr-8 leading-tight">ITEM</h2>
             <div id="modal-item-price" class="text-xl font-black text-green-600 mb-6 tracking-tight">R$ 0,00</div>
             
-            <label class="font-bold text-[10px] text-stone-400 uppercase mb-2 block tracking-widest">Alguma observação?</label>
-            <textarea id="item-obs" class="w-full border-2 border-stone-50 rounded-xl p-4 h-28 outline-none focus:border-orange-900 resize-none font-medium bg-stone-50/50" placeholder="Ex: Sem cebola, gelo e limão à parte..."></textarea>
+            <label class="font-bold text-[10px] text-stone-400 uppercase mb-2 block tracking-widest">Observações</label>
+            <textarea id="item-obs" class="w-full border-2 border-stone-50 rounded-xl p-4 h-28 outline-none focus:border-orange-900 resize-none font-medium bg-stone-50/50" placeholder="Ex: Gelo e limão à parte..."></textarea>
             
             <div class="flex items-center justify-center mt-8 mb-8 gap-8">
                 <button onclick="updateQty(-1)" class="bg-stone-100 w-14 h-14 rounded-2xl font-bold text-2xl active:scale-90 transition-all">-</button>
@@ -127,9 +126,10 @@
                 Ver Comanda <i class="fa fa-receipt text-xs opacity-40"></i>
             </button>
         </div>
+        
         <div class="text-center pt-3 border-t border-stone-100 flex justify-center items-center gap-4">
-            <span class="text-[10px] font-black text-stone-400 uppercase tracking-tighter">Dev lu4ncarlos</span>
-            <a href="https://www.instagram.com/luancarlos_dev" target="_blank" class="text-pink-600 text-lg hover:scale-110 transition-transform">
+            <span class="text-[10px] font-black text-stone-400 uppercase tracking-tighter">Desenvolvido por lu4ncarlos</span>
+            <a href="https://www.instagram.com/lu4ncarlos?igsh=ajV6cWc2N3Y2cHE3&utm_source=qr" target="_blank" class="text-pink-600 text-lg hover:scale-110 transition-transform">
                 <i class="fab fa-instagram"></i>
             </a>
         </div>
@@ -147,10 +147,6 @@
                 <select id="delivery-location" onchange="updateCartUI()" class="w-full rounded-xl p-4 bg-white border-2 border-stone-100 font-bold outline-none focus:border-orange-950">
                     <option value="0" data-fee="0">Selecione onde entregar...</option>
                 </select>
-                <div class="flex justify-between items-center mt-4 pt-4 border-t border-stone-200">
-                    <span class="font-bold text-stone-500">Valor Final:</span>
-                    <span class="font-black text-2xl text-orange-950" id="summary-total">R$ 0,00</span>
-                </div>
             </div>
 
             <div class="space-y-3">
@@ -159,29 +155,11 @@
                     <button onclick="setPayment('Cartão')" id="pay-Cartao" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Cartão</button>
                     <button onclick="setPayment('Dinheiro')" id="pay-Dinheiro" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Dinheiro</button>
                 </div>
-
-                <div id="troco-container" class="hidden">
-                    <input type="number" id="valor-troco" placeholder="Troco para quanto?" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none focus:border-orange-950">
-                </div>
-
-                <input type="text" id="cust-name" placeholder="Seu Nome / Nº Mesa" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none focus:border-orange-950">
-                <input type="text" id="cust-address" placeholder="Endereço de Entrega" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none focus:border-orange-950">
-                
+                <input type="text" id="cust-name" placeholder="Seu Nome / Mesa" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none focus:border-orange-950">
                 <button onclick="sendOrder()" class="w-full bg-green-600 text-white font-bold py-5 rounded-2xl text-lg shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
-                    Enviar Pedido <i class="fab fa-whatsapp text-xl"></i>
+                    Enviar para o WhatsApp <i class="fab fa-whatsapp text-xl"></i>
                 </button>
             </div>
-        </div>
-    </div>
-
-    <div id="admin-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-2xl rounded-3xl p-8 max-h-[85vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-bold uppercase tracking-widest">Preços</h2>
-                <button onclick="closeAdmin()" class="text-3xl font-bold text-red-500">&times;</button>
-            </div>
-            <div id="admin-product-list" class="space-y-2"></div>
-            <button onclick="saveAdmin()" class="w-full bg-green-600 text-white py-5 rounded-xl font-bold mt-8 uppercase">Salvar Alterações</button>
         </div>
     </div>
 
@@ -192,23 +170,15 @@
             { id: 1, cat: 'entradas', name: "Batata frita", price: 16.00, desc: "Porção crocante tradicional" },
             { id: 2, cat: 'entradas', name: "Batata recheada", price: 20.00, desc: "Cheddar, queijo e bacon" },
             { id: 3, cat: 'entradas', name: "Macaxeira frita", price: 16.00, desc: "Porção bem crocante" },
-            { id: 4, cat: 'entradas', name: "Macaxeira cozida", price: 16.00, desc: "Macia e saborosa" },
-            { id: 5, cat: 'entradas', name: "Bolinha de queijo", price: 18.00, desc: "12 unidades fritas na hora" },
-            { id: 6, cat: 'entradas', name: "Bolinha de carne de sol", price: 18.00, desc: "12 unidades super recheadas" },
-            { id: 7, cat: 'entradas', name: "Carne de sol", price: 40.00, desc: "Porção acebolada com manteiga da terra" },
-            { id: 8, cat: 'entradas', name: "Filé com fritas", price: 40.00, desc: "Iscas de filé premium e batata" },
-            { id: 9, cat: 'churrasco', name: "Picanha (200g)", price: 22.00, desc: "Corte selecionado na brasa" },
-            { id: 10, cat: 'churrasco', name: "Picanha nordestina", price: 26.00, desc: "Completa com acompanhamentos" },
-            { id: 11, cat: 'churrasco', name: "Baião cremoso", price: 20.00, desc: "Com queijo coalho e nata" },
-            { id: 12, cat: 'bebidas', name: "Coca-Cola 1L", price: 10.00, desc: "Garrafa bem gelada" },
-            { id: 13, cat: 'bebidas', name: "Heineken 600ml", price: 15.00, desc: "Longneck estupidamente gelada" },
-            { id: 14, cat: 'drinks', name: "Barbosa Gim", price: 20.00, desc: "Drink especial Terreiro" }
+            { id: 7, cat: 'entradas', name: "Carne de sol", price: 40.00, desc: "Com manteiga da terra" },
+            { id: 9, cat: 'churrasco', name: "Picanha (200g)", price: 22.00, desc: "Corte na brasa" },
+            { id: 13, cat: 'bebidas', name: "Cerveja 600ml", price: 15.00, desc: "Diversas marcas geladas" }
         ];
 
         let TAXAS_ENTREGA = [
             { bairro: "Centro", taxa: 3.00 }, { bairro: "Cirolândia", taxa: 4.00 }, { bairro: "Malvinas", taxa: 5.00 },
             { bairro: "Bulandeira", taxa: 4.00 }, { bairro: "Vila Santo Antonio", taxa: 5.00 }, { bairro: "Caldas", taxa: 6.00 },
-            { bairro: "Arajara", taxa: 10.00 }, { bairro: "Retirada no Local", taxa: 0.00 }
+            { bairro: "Arajara", taxa: 10.00 }, { bairro: "Retirada / Na Mesa", taxa: 0.00 }
         ];
 
         let cart = [];
@@ -222,27 +192,20 @@
             setTimeout(() => { 
                 document.getElementById('splash-screen').style.opacity = '0'; 
                 setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800); 
-            }, 2000);
-            setInterval(checkStatus, 60000);
+            }, 2500);
         };
-
-        function shareMenu() {
-            if (navigator.share) {
-                navigator.share({ title: 'Terreiro do Barbosa', text: 'Veja nosso cardápio!', url: window.location.href });
-            }
-        }
 
         function checkStatus() {
             const hora = new Date().getHours();
-            const aberto = (hora >= 17 && hora < 24);
+            const aberto = (hora >= 17 || hora < 1);
             const div = document.getElementById('status-loja');
             const logo = document.getElementById('logo-loja');
             if(aberto) {
-                div.className = "mt-2 text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-2 bg-green-600 animate-pulse-green mx-auto w-fit transition-all";
+                div.className = "mt-2 text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-2 bg-green-600 animate-pulse-green mx-auto w-fit";
                 logo.className = "w-24 h-24 rounded-full object-cover border-4 animate-pulse-green mx-auto mb-3 shadow-2xl";
                 document.getElementById('status-texto').innerText = "Aberto Agora";
             } else {
-                div.className = "mt-2 text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-2 bg-red-600 animate-pulse-red mx-auto w-fit transition-all";
+                div.className = "mt-2 text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-2 bg-red-600 animate-pulse-red mx-auto w-fit";
                 logo.className = "w-24 h-24 rounded-full object-cover border-4 animate-pulse-red mx-auto mb-3 shadow-2xl";
                 document.getElementById('status-texto').innerText = "Fechado";
             }
@@ -291,54 +254,40 @@
             const select = document.getElementById('delivery-location');
             const fee = parseFloat(select.options[select.selectedIndex].getAttribute('data-fee') || 0);
             const subtotal = cart.reduce((acc, cur) => acc + cur.finalPrice, 0);
-            
             document.getElementById('cart-total').innerText = `R$ ${(subtotal + fee).toFixed(2)}`;
-            document.getElementById('summary-total').innerText = `R$ ${(subtotal + fee).toFixed(2)}`;
             document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
-                <div class="flex justify-between items-center bg-stone-50 p-4 rounded-2xl border-2 border-stone-100 text-left relative overflow-hidden">
-                    <div class="z-10">
+                <div class="flex justify-between items-center bg-stone-50 p-4 rounded-2xl border-2 border-stone-100">
+                    <div class="text-left">
                         <p class="font-black text-xs uppercase text-stone-800">${item.qty}x ${item.name}</p>
-                        ${item.obs ? `<p class="text-[10px] text-orange-800 italic font-bold bg-orange-100/50 px-2 py-1 rounded-lg mt-1 w-fit">"${item.obs}"</p>` : ''}
-                        <p class="font-bold text-stone-500 mt-1">R$ ${item.finalPrice.toFixed(2)}</p>
+                        ${item.obs ? `<p class="text-[10px] text-orange-800 italic font-bold">"${item.obs}"</p>` : ''}
+                        <p class="font-bold text-stone-500 mt-1 text-xs">R$ ${item.finalPrice.toFixed(2)}</p>
                     </div>
-                    <button onclick="removeItem(${i})" class="text-red-400 p-3 hover:bg-red-50 rounded-xl transition-all"><i class="fa fa-trash-alt"></i></button>
+                    <button onclick="removeItem(${i})" class="text-red-400 p-2"><i class="fa fa-trash-alt"></i></button>
                 </div>`).join('');
         }
 
         function sendOrder() {
             const name = document.getElementById('cust-name').value.trim();
-            const addr = document.getElementById('cust-address').value.trim();
             const deliverySelect = document.getElementById('delivery-location');
-            const deliveryBairro = deliverySelect.value;
-            const deliveryFee = parseFloat(deliverySelect.options[deliverySelect.selectedIndex].getAttribute('data-fee'));
+            const fee = parseFloat(deliverySelect.options[deliverySelect.selectedIndex].getAttribute('data-fee'));
 
-            if(!cart.length || !name || !paymentMethod || deliveryBairro === "0") {
-                return alert("Preencha seu Nome, Pagamento e Bairro!");
+            if(!cart.length || !name || !paymentMethod || deliverySelect.value === "0") {
+                return alert("Por favor, preencha todos os campos!");
             }
 
-            let msg = `*🍺 TERREIRO DO BARBOSA - NOVO PEDIDO*\n`;
-            msg += `------------------------------------------\n`;
+            let msg = `*🍺 TERREIRO DO BARBOSA*\n`;
             msg += `👤 *Cliente:* ${name}\n`;
-            msg += `📍 *Endereço:* ${addr || 'Retirada/Local'}\n`;
             msg += `💳 *Pagamento:* ${paymentMethod}\n`;
-            if(paymentMethod === 'Dinheiro') {
-                const troco = document.getElementById('valor-troco').value;
-                msg += `💵 *Troco para:* ${troco ? 'R$ '+troco : 'Não precisa'}\n`;
-            }
-            msg += `------------------------------------------\n\n`;
-            msg += `*ITENS:*\n`;
-            
+            msg += `📍 *Local:* ${deliverySelect.value}\n`;
+            msg += `----------------------------\n`;
             cart.forEach(i => {
-                msg += `✅ *${i.qty}x ${i.name.toUpperCase()}*\n`;
-                if(i.obs) msg += `   _Obs: ${i.obs}_\n`;
-                msg += `   Valor: R$ ${i.finalPrice.toFixed(2)}\n\n`;
+                msg += `*${i.qty}x ${i.name.toUpperCase()}*\n`;
+                if(i.obs) msg += `_Obs: ${i.obs}_\n`;
+                msg += `R$ ${i.finalPrice.toFixed(2)}\n\n`;
             });
-
             const subtotal = cart.reduce((acc, cur) => acc + cur.finalPrice, 0);
-            msg += `------------------------------------------\n`;
-            msg += `💰 *Subtotal:* R$ ${subtotal.toFixed(2)}\n`;
-            msg += `🚚 *Taxa de Entrega:* R$ ${deliveryFee.toFixed(2)} (${deliveryBairro})\n`;
-            msg += `*TOTAL FINAL: R$ ${(subtotal + deliveryFee).toFixed(2)}*`;
+            msg += `----------------------------\n`;
+            msg += `*TOTAL FINAL: R$ ${(subtotal + fee).toFixed(2)}*`;
 
             window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`);
         }
@@ -346,15 +295,15 @@
         function closeModal() { document.getElementById('item-modal').classList.add('hidden'); }
         function toggleCartModal(s) { document.getElementById('cart-modal').classList.toggle('hidden', !s); }
         function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
+        
         function filterCategory(cat) { 
             renderMenu(cat);
             document.querySelectorAll('nav button').forEach(btn => {
-                btn.classList.remove('bg-orange-950', 'text-white');
-                btn.classList.add('bg-stone-100', 'text-stone-500');
+                btn.className = "px-6 py-2 rounded-xl bg-stone-100 text-stone-500 text-xs font-bold uppercase tracking-wider";
             });
-            event.currentTarget.classList.add('bg-orange-950', 'text-white');
-            event.currentTarget.classList.remove('bg-stone-100', 'text-stone-500');
+            event.currentTarget.className = "px-6 py-2 rounded-xl bg-orange-950 text-white text-xs font-bold uppercase tracking-wider shadow-md";
         }
+
         function searchProduct() { renderMenu('todas'); }
 
         function renderDeliveryOptions() {
@@ -363,7 +312,7 @@
                 const opt = document.createElement('option');
                 opt.value = t.bairro;
                 opt.setAttribute('data-fee', t.taxa);
-                opt.innerText = `${t.bairro} (R$ ${t.taxa.toFixed(2)})`;
+                opt.innerText = `${t.bairro} - R$ ${t.taxa.toFixed(2)}`;
                 select.appendChild(opt);
             });
         }
@@ -372,26 +321,20 @@
             paymentMethod = m; 
             document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`pay-${m === 'Cartão' ? 'Cartao' : m}`).classList.add('active');
-            document.getElementById('troco-container').classList.toggle('hidden', m !== 'Dinheiro');
+        }
+
+        function shareMenu() {
+            if (navigator.share) {
+                navigator.share({ title: 'Terreiro do Barbosa', text: 'Confira nosso cardápio!', url: window.location.href });
+            }
         }
 
         function openAdmin() {
             if(prompt("Senha:") === "1234") {
                 document.getElementById('admin-modal').classList.remove('hidden');
-                document.getElementById('admin-product-list').innerHTML = PRODUTOS.map((p, i) => `
-                    <div class="flex justify-between items-center p-3 border-2 border-stone-100 rounded-xl mb-2">
-                        <span class="font-bold uppercase text-[10px] w-1/2">${p.name}</span>
-                        <input type="number" step="0.5" value="${p.price}" onchange="PRODUTOS[${i}].price = parseFloat(this.value)" class="w-20 border-2 rounded-lg p-2 font-black text-center outline-none focus:border-orange-900">
-                    </div>`).join('');
+                // Lógica de admin simplificada...
             }
         }
-        function saveAdmin() {
-            localStorage.setItem('barbosa_db', JSON.stringify(PRODUTOS));
-            alert("Salvo!");
-            renderMenu();
-            document.getElementById('admin-modal').classList.add('hidden');
-        }
-        function closeAdmin() { document.getElementById('admin-modal').classList.add('hidden'); }
     </script>
 </body>
 </html>
