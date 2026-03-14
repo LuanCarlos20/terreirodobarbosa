@@ -42,12 +42,30 @@
         
         .product-img { width: 80px; height: 80px; border-radius: 1rem; object-fit: cover; }
 
-        /* Estilos do Novo Banner Slide */
-        .banner-container { width: 100%; max-width: 400px; height: 150px; margin: 15px auto; overflow: hidden; border-radius: 20px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        /* BANNER CORRIGIDO - BEM MAIS ESTREITO */
+        .banner-container { 
+            width: 85%; 
+            max-width: 280px; 
+            height: 90px;    
+            margin: 15px auto; 
+            overflow: hidden; 
+            border-radius: 12px; 
+            position: relative; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        }
         .banner-wrapper { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
         .banner-slide { min-width: 100%; height: 100%; position: relative; }
         .banner-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .banner-text { position: absolute; bottom: 10px; left: 15px; color: white; font-weight: bold; font-size: 14px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .banner-text { 
+            position: absolute; 
+            bottom: 6px; 
+            left: 10px; 
+            color: white; 
+            font-weight: 800; 
+            font-size: 10px; 
+            text-transform: uppercase;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8); 
+        }
     </style>
 </head>
 <body class="text-stone-900 pb-44">
@@ -82,8 +100,7 @@
             <div id="status-loja" class="mt-2 text-white px-5 py-1 rounded-full text-[10px] font-black flex items-center justify-center gap-2 mx-auto w-fit transition-all uppercase">
                 <i class="fa fa-circle text-[8px]"></i> <span id="status-texto">Verificando...</span>
             </div>
-            
-            <div id="horario-texto" class="text-white/80 text-[11px] font-bold mt-2 uppercase tracking-tighter bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm"></div>
+            <div id="horario-texto" class="text-white/80 text-[10px] font-bold mt-2 uppercase tracking-tighter bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm"></div>
         </div>
     </header>
 
@@ -91,15 +108,15 @@
         <div class="banner-wrapper" id="banner-slider">
             <div class="banner-slide">
                 <img src="https://images.unsplash.com/photo-1594433036440-422072175782?q=80&w=600" alt="Feijoada">
-                <p class="banner-text">FEIJOADA COMPLETA AOS SÁBADOS</p>
+                <p class="banner-text">Feijoada aos Sábados</p>
             </div>
             <div class="banner-slide">
                 <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" alt="Churrasco">
-                <p class="banner-text">CHURRASCO NA BRASA</p>
+                <p class="banner-text">Churrasco na Brasa</p>
             </div>
             <div class="banner-slide">
                 <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600" alt="Bebidas">
-                <p class="banner-text">DRINKS EXCLUSIVOS</p>
+                <p class="banner-text">Drinks Gelados</p>
             </div>
         </div>
     </div>
@@ -140,7 +157,7 @@
             </div>
 
             <button onclick="confirmItem()" class="w-full bg-orange-950 text-white font-bold py-5 rounded-2xl uppercase tracking-widest shadow-xl active:scale-95 transition-all">
-                Adicionar à Comanda
+                Adicionar ao Pedido
             </button>
         </div>
     </div>
@@ -152,7 +169,7 @@
                 <p class="text-2xl font-black text-orange-950" id="cart-total">R$ 0,00</p>
             </div>
             <button onclick="toggleCartModal(true)" class="bg-orange-950 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3 shadow-lg active:scale-95 transition-all">
-                Ver Comanda <i class="fa fa-receipt text-xs opacity-40"></i>
+                Ver Pedido <i class="fa fa-receipt text-xs opacity-40"></i>
             </button>
         </div>
         
@@ -167,7 +184,7 @@
     <div id="cart-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-md">
         <div class="bg-white w-full max-w-lg rounded-[2.5rem] max-h-[90vh] flex flex-col p-6 shadow-2xl relative">
             <button onclick="toggleCartModal(false)" class="absolute top-5 right-6 text-stone-300 text-4xl">&times;</button>
-            <h2 class="text-2xl font-serif font-bold mb-6 border-b pb-4">Minha Comanda</h2>
+            <h2 class="text-2xl font-serif font-bold mb-6 border-b pb-4">Meu Pedido</h2>
             
             <div id="cart-items" class="flex-1 overflow-y-auto space-y-3 pr-1 scrollbar-hide mb-6"></div>
 
@@ -184,9 +201,14 @@
                     <button onclick="setPayment('Cartão')" id="pay-Cartao" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Cartão</button>
                     <button onclick="setPayment('Dinheiro')" id="pay-Dinheiro" class="payment-btn border-2 border-stone-100 rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Dinheiro</button>
                 </div>
+                
+                <div id="troco-container" class="hidden">
+                    <input type="text" id="input-troco" placeholder="Troco para quanto?" class="w-full border-2 border-green-100 rounded-xl p-4 font-bold outline-none focus:border-green-600 bg-green-50/50">
+                </div>
+
                 <input type="text" id="cust-name" placeholder="Seu Nome / Mesa" class="w-full border-2 border-stone-100 rounded-xl p-4 font-bold outline-none focus:border-orange-950">
                 <button onclick="sendOrder()" class="w-full bg-green-600 text-white font-bold py-5 rounded-2xl text-lg shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
-                    Enviar para o WhatsApp <i class="fab fa-whatsapp text-xl"></i>
+                    Enviar Pedido <i class="fab fa-whatsapp text-xl"></i>
                 </button>
             </div>
         </div>
@@ -269,14 +291,13 @@
             checkStatus();
             renderMenu();
             renderDeliveryOptions();
-            initBanner(); // Iniciar o banner automático
+            initBanner();
             setTimeout(() => { 
                 document.getElementById('splash-screen').style.opacity = '0'; 
                 setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800); 
             }, 2500);
         };
 
-        // LÓGICA DE HORÁRIO E DIA ATUALIZADA
         function checkStatus() {
             const agora = new Date();
             const dia = agora.getDay(); 
@@ -287,17 +308,15 @@
             let horarioInfo = "";
 
             if (dia === 5) { // Sexta
-                horarioInfo = "Sexta: 16:00 às 00:00";
+                horarioInfo = "16h às 00h";
                 if (hora >= 16) aberto = true;
             } else if (dia === 6) { // Sábado
-                horarioInfo = "Sábado: 12:00 às 00:00";
+                horarioInfo = "12h às 00h";
                 if (hora >= 12) aberto = true;
             } else if (dia === 0) { // Domingo
-                horarioInfo = "Domingo: 12:00 às 22:00";
+                horarioInfo = "12h às 22h";
                 if (hora >= 12 && hora < 22) aberto = true;
-            } else {
-                horarioInfo = "Seg a Qui: Fechado";
-            }
+            } else { horarioInfo = "Fechado"; }
 
             document.getElementById('horario-texto').innerText = `${diasSemana[dia]} • ${horarioInfo}`;
 
@@ -314,7 +333,6 @@
             }
         }
 
-        // LÓGICA DO BANNER
         function initBanner() {
             const slider = document.getElementById('banner-slider');
             let index = 0;
@@ -322,16 +340,6 @@
                 index = (index + 1) % 3;
                 slider.style.transform = `translateX(-${index * 100}%)`;
             }, 4000);
-        }
-
-        // LÓGICA DO ADMIN CORRIGIDA
-        function openAdmin() {
-            const pass = prompt("Senha Administrativa:");
-            if(pass === "1234") {
-                alert("Acesso autorizado! Carregando painel...");
-            } else if(pass !== null) {
-                alert("Senha incorreta!");
-            }
         }
 
         function renderMenu(cat = 'todas') {
@@ -394,13 +402,17 @@
         function sendOrder() {
             const name = document.getElementById('cust-name').value.trim();
             const deliverySelect = document.getElementById('delivery-location');
+            const troco = document.getElementById('input-troco').value.trim();
             const fee = parseFloat(deliverySelect.options[deliverySelect.selectedIndex].getAttribute('data-fee'));
+            
             if(!cart.length || !name || !paymentMethod || deliverySelect.value === "0") {
                 return alert("Por favor, preencha todos os campos!");
             }
+
             let msg = `*🍺 TERREIRO DO BARBOSA*\n`;
             msg += `👤 *Cliente:* ${name}\n`;
             msg += `💳 *Pagamento:* ${paymentMethod}\n`;
+            if(paymentMethod === 'Dinheiro' && troco) msg += `💵 *Troco para:* R$ ${troco}\n`;
             msg += `📍 *Local:* ${deliverySelect.value}\n`;
             msg += `----------------------------\n`;
             cart.forEach(i => {
@@ -443,6 +455,14 @@
             paymentMethod = m; 
             document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`pay-${m === 'Cartão' ? 'Cartao' : m}`).classList.add('active');
+            
+            // Lógica para mostrar o campo de troco
+            const trocoDiv = document.getElementById('troco-container');
+            if(m === 'Dinheiro') {
+                trocoDiv.classList.remove('hidden');
+            } else {
+                trocoDiv.classList.add('hidden');
+            }
         }
 
         function shareMenu() {
