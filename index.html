@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terreiro do Barbosa - Cardápio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, .font-serif { font-family: 'Playfair Display', serif; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+        #splash-screen {
+            position: fixed; inset: 0; background: #3e1a11; z-index: 100;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+
+        /* Efeito de luzes a piscar (Igual ao da Pizzaria) */
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(22, 163, 74, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+        }
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+
+        .animate-pulse-green { animation: pulse-green 2s infinite; border-color: #16a34a !important; }
+        .animate-pulse-red { animation: pulse-red 2s infinite; border-color: #dc2626 !important; }
+        
+        .payment-btn.active { background-color: #7c2d12 !important; color: white !important; border-color: #7c2d12 !important; }
+        .price-green { color: #16a34a; font-size: 1.5rem; font-weight: bold; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-900 pb-32">
+
+    <div id="splash-screen">
+        <img src="https://i.ibb.co/LzNfX6Xp/Whats-App-Image-2026-03-13-at-20-43-58.jpg" class="w-32 h-32 rounded-full border-4 border-yellow-600 mb-4 animate-bounce">
+        <h1 class="text-white text-2xl font-serif italic text-yellow-500">Terreiro do Barbosa</h1>
+    </div>
+
+    <header class="w-full h-[260px] bg-[#3e1a11] relative overflow-hidden">
+        <div class="absolute top-4 left-4 flex gap-2 z-10">
+            <button onclick="openAdmin()" class="bg-white/20 text-white w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg border border-white/30">
+                <i class="fas fa-lock text-sm"></i>
+            </button>
+        </div>
+
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+            <img id="logo-loja" src="https://i.ibb.co/LzNfX6Xp/Whats-App-Image-2026-03-13-at-20-43-58.jpg" class="w-20 h-20 rounded-full object-cover border-4 border-transparent shadow-xl mb-2 transition-all">
+            <h1 class="text-white text-2xl font-serif font-bold uppercase tracking-widest">Terreiro do Barbosa</h1>
+            <div id="status-loja" class="mt-2 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 transition-all">
+                <i class="fa fa-clock"></i> <span id="status-texto">Verificando...</span>
+            </div>
+            <p class="text-white/80 text-[11px] mt-2 font-medium">Aberto das 17h às 00h</p>
+        </div>
+    </header>
+
+    <nav class="sticky top-0 bg-white shadow-md z-40 overflow-x-auto whitespace-nowrap p-3 flex gap-3 scrollbar-hide">
+        <button onclick="filterCategory('todas')" class="px-5 py-2 rounded-full bg-orange-900 text-white text-sm font-semibold">Todas</button>
+        <button onclick="filterCategory('entradas')" class="px-5 py-2 rounded-full bg-stone-100 text-sm font-medium">Entradas</button>
+        <button onclick="filterCategory('churrasco')" class="px-5 py-2 rounded-full bg-stone-100 text-sm font-medium">Churrasco</button>
+        <button onclick="filterCategory('bebidas')" class="px-5 py-2 rounded-full bg-stone-100 text-sm font-medium">Bebidas</button>
+        <button onclick="filterCategory('drinks')" class="px-5 py-2 rounded-full bg-stone-100 text-sm font-medium">Drinks</button>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-4 mt-4">
+        <div class="relative">
+            <input type="text" id="search-input" oninput="searchProduct()" placeholder="Buscar petisco ou bebida..." 
+                   class="w-full bg-white border border-stone-200 rounded-2xl py-3.5 pl-11 pr-4 outline-none focus:ring-2 focus:ring-orange-800 transition-all shadow-sm">
+            <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-4" id="menu-container"></main>
+
+    <div id="item-modal" class="fixed inset-0 bg-black/70 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <h2 id="modal-item-title" class="font-bold text-lg uppercase text-stone-800">ITEM</h2>
+                <button onclick="closeModal()" class="text-stone-400 text-2xl">&times;</button>
+            </div>
+            <div id="modal-item-price" class="price-green mb-4">R$ 0,00</div>
+            <label class="font-bold text-sm block mb-1">Observações</label>
+            <textarea id="item-obs" class="w-full border rounded-xl p-4 h-24 outline-none focus:ring-2 focus:ring-orange-800 resize-none" placeholder="Ex: Sem cebola, bem passado..."></textarea>
+            
+            <div class="flex items-center mt-6 mb-6">
+                <button onclick="updateQty(-1)" class="bg-stone-100 w-12 h-12 rounded-l-xl font-bold text-xl">-</button>
+                <div id="item-qty" class="flex-1 h-12 border-y flex items-center justify-center font-bold text-lg">1</div>
+                <button onclick="updateQty(1)" class="bg-stone-100 w-12 h-12 rounded-r-xl font-bold text-xl">+</button>
+            </div>
+
+            <button onclick="confirmItem()" class="w-full bg-orange-900 text-white font-bold py-4 rounded-xl uppercase tracking-wider">
+                Adicionar ao Carrinho
+            </button>
+        </div>
+    </div>
+
+    <footer class="fixed bottom-0 w-full bg-white border-t p-4 z-50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="text-left">
+                <span class="text-[10px] text-stone-500 uppercase font-bold">Total + Entrega</span>
+                <p class="text-xl font-black text-orange-900" id="cart-total">R$ 0,00</p>
+            </div>
+            <button onclick="toggleCartModal(true)" class="bg-orange-900 text-white px-8 py-4 rounded-2xl font-bold shadow-lg">
+                Ver Comanda <i class="fa fa-receipt ml-2"></i>
+            </button>
+        </div>
+    </footer>
+
+    <div id="cart-modal" class="fixed inset-0 bg-black/70 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-lg rounded-3xl max-h-[90vh] overflow-y-auto p-6 relative">
+            <button onclick="toggleCartModal(false)" class="absolute top-4 right-4 text-stone-400 text-3xl">×</button>
+            <h2 class="text-2xl font-serif font-bold mb-6 border-b pb-4 text-left">Minha Comanda</h2>
+            
+            <div id="cart-items" class="space-y-4 mb-6"></div>
+
+            <div class="bg-stone-50 p-4 rounded-2xl border mb-6 text-left">
+                <label class="font-bold mb-2 block text-sm">Local de Entrega:</label>
+                <select id="delivery-location" onchange="updateCartUI()" class="w-full rounded-xl p-3 bg-white border font-bold">
+                    <option value="0" data-fee="0">Selecione o bairro...</option>
+                </select>
+                <div class="flex justify-between font-black text-lg text-orange-900 border-t mt-3 pt-3">
+                    <span>Total Final:</span> <span id="summary-total">R$ 0,00</span>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setPayment('Pix')" id="pay-Pix" class="payment-btn border rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Pix</button>
+                    <button onclick="setPayment('Cartao')" id="pay-Cartao" class="payment-btn border rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Cartão</button>
+                    <button onclick="setPayment('Dinheiro')" id="pay-Dinheiro" class="payment-btn border rounded-xl py-3 text-[10px] font-bold uppercase transition-all">Dinheiro</button>
+                </div>
+
+                <div id="troco-container" class="hidden text-left bg-orange-50 p-3 rounded-xl border border-orange-100">
+                    <label class="text-[10px] font-bold text-orange-800">Precisa de troco para quanto?</label>
+                    <input type="number" id="valor-troco" placeholder="Ex: 100" class="w-full border rounded-xl p-3 mt-1 outline-orange-800 font-bold">
+                </div>
+
+                <input type="text" id="cust-name" placeholder="Seu Nome / Mesa" class="w-full border rounded-xl p-4 outline-orange-800 font-bold">
+                <input type="text" id="cust-address" placeholder="Endereço Completo" class="w-full border rounded-xl p-4 outline-orange-800 font-bold">
+                
+                <button onclick="sendOrder()" class="w-full bg-green-600 text-white font-bold py-5 rounded-2xl text-lg shadow-lg">
+                    Pedir pelo WhatsApp <i class="fab fa-whatsapp ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl rounded-2xl p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold uppercase">Painel de Preços</h2>
+                <button onclick="closeAdmin()" class="text-2xl font-bold text-red-500">&times;</button>
+            </div>
+            <div id="admin-product-list" class="space-y-2"></div>
+            <button onclick="saveAdmin()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold mt-6 uppercase">Salvar Preços</button>
+        </div>
+    </div>
+
+    <script>
+        const WHATSAPP_NUMBER = "5588992791644";
+        
+        // Base de Dados (Cardápio Completo Barbosa)
+        let PRODUTOS = JSON.parse(localStorage.getItem('barbosa_db')) || [
+            { id: 1, cat: 'entradas', name: "Batata frita", price: 16.00, desc: "Tradicional" },
+            { id: 2, cat: 'entradas', name: "Batata recheada", price: 20.00, desc: "Cheddar, queijo e bacon" },
+            { id: 3, cat: 'entradas', name: "Macaxeira frita", price: 16.00, desc: "Porção crocante" },
+            { id: 4, cat: 'entradas', name: "Macaxeira cozida", price: 16.00, desc: "Macia" },
+            { id: 5, cat: 'entradas', name: "Bolinha de queijo", price: 18.00, desc: "12 unidades" },
+            { id: 6, cat: 'entradas', name: "Bolinha de carne de sol", price: 18.00, desc: "12 unidades" },
+            { id: 7, cat: 'entradas', name: "Carne de sol", price: 40.00, desc: "Porção acebolada" },
+            { id: 8, cat: 'entradas', name: "Filé com fritas", price: 40.00, desc: "Iscas de filé e batata" },
+            { id: 9, cat: 'churrasco', name: "Picanha (200g)", price: 22.00, desc: "Corte premium" },
+            { id: 10, cat: 'churrasco', name: "Picanha nordestina", price: 26.00, desc: "Completa" },
+            { id: 11, cat: 'churrasco', name: "Baião cremoso", price: 20.00, desc: "Com queijo e nata" },
+            { id: 12, cat: 'bebidas', name: "Coca-Cola 1L", price: 10.00, desc: "Garrafa" },
+            { id: 13, cat: 'bebidas', name: "Heineken 600ml", price: 15.00, desc: "Gelada" },
+            { id: 14, cat: 'drinks', name: "Barbosa Gim", price: 20.00, desc: "Drink da casa" }
+        ];
+
+        let TAXAS_ENTREGA = [
+            { bairro: "Centro", taxa: 3.00 }, { bairro: "Cirolândia", taxa: 4.00 }, { bairro: "Malvinas", taxa: 5.00 }, { bairro: "Retirada no Local", taxa: 0.00 }
+        ];
+
+        let cart = [];
+        let curItem = null;
+        let paymentMethod = "";
+
+        // Inicialização
+        window.onload = () => {
+            checkStatus();
+            renderMenu();
+            renderDeliveryOptions();
+            setTimeout(() => { document.getElementById('splash-screen').style.opacity = '0'; 
+            setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800); }, 1500);
+            setInterval(checkStatus, 60000);
+        };
+
+        function checkStatus() {
+            const hora = new Date().getHours();
+            const aberto = (hora >= 17 && hora < 24);
+            const div = document.getElementById('status-loja');
+            const logo = document.getElementById('logo-loja');
+            if(aberto) {
+                div.className = "mt-2 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 bg-green-600 animate-pulse-green";
+                logo.className = "w-20 h-20 rounded-full object-cover border-4 animate-pulse-green";
+                document.getElementById('status-texto').innerText = "ABERTO AGORA";
+            } else {
+                div.className = "mt-2 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 bg-red-600 animate-pulse-red";
+                logo.className = "w-20 h-20 rounded-full object-cover border-4 animate-pulse-red";
+                document.getElementById('status-texto').innerText = "FECHADO";
+            }
+        }
+
+        function renderMenu(cat = 'todas') {
+            const container = document.getElementById('menu-container');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const filtered = PRODUTOS.filter(p => (cat === 'todas' || p.cat === cat) && p.name.toLowerCase().includes(search));
+            
+            container.innerHTML = filtered.map(p => `
+                <div onclick="openItemModal(${p.id})" class="bg-white p-4 rounded-2xl shadow-sm border flex justify-between items-center cursor-pointer active:scale-95 transition-all">
+                    <div class="text-left">
+                        <h3 class="font-bold text-sm uppercase">${p.name}</h3>
+                        <p class="text-[10px] text-stone-400 mb-2">${p.desc}</p>
+                        <p class="font-black text-orange-900 text-lg">R$ ${p.price.toFixed(2)}</p>
+                    </div>
+                    <div class="bg-stone-50 w-12 h-12 rounded-xl flex items-center justify-center text-orange-900 border"><i class="fa fa-plus"></i></div>
+                </div>`).join('');
+        }
+
+        function openItemModal(id) {
+            const p = PRODUTOS.find(x => x.id === id);
+            curItem = {...p, qty: 1};
+            document.getElementById('modal-item-title').innerText = p.name;
+            document.getElementById('modal-item-price').innerText = `R$ ${p.price.toFixed(2)}`;
+            document.getElementById('item-qty').innerText = "1";
+            document.getElementById('item-obs').value = "";
+            document.getElementById('item-modal').classList.remove('hidden');
+        }
+
+        function updateQty(v) {
+            curItem.qty = Math.max(1, curItem.qty + v);
+            document.getElementById('item-qty').innerText = curItem.qty;
+            document.getElementById('modal-item-price').innerText = `R$ ${(curItem.price * curItem.qty).toFixed(2)}`;
+        }
+
+        function confirmItem() {
+            cart.push({...curItem, obs: document.getElementById('item-obs').value, finalPrice: curItem.price * curItem.qty});
+            updateCartUI();
+            closeModal();
+        }
+
+        function updateCartUI() {
+            const select = document.getElementById('delivery-location');
+            const fee = parseFloat(select.options[select.selectedIndex].getAttribute('data-fee') || 0);
+            const subtotal = cart.reduce((acc, cur) => acc + cur.finalPrice, 0);
+            
+            document.getElementById('cart-total').innerText = `R$ ${(subtotal + fee).toFixed(2)}`;
+            document.getElementById('summary-total').innerText = `R$ ${(subtotal + fee).toFixed(2)}`;
+            document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
+                <div class="flex justify-between items-center bg-stone-50 p-4 rounded-xl border text-left">
+                    <div>
+                        <p class="font-bold text-sm">${item.qty}x ${item.name}</p>
+                        <p class="text-[10px] text-orange-700 italic">${item.obs}</p>
+                        <p class="font-black">R$ ${item.finalPrice.toFixed(2)}</p>
+                    </div>
+                    <button onclick="removeItem(${i})" class="text-red-400 p-2"><i class="fa fa-trash"></i></button>
+                </div>`).join('');
+        }
+
+        function sendOrder() {
+            const name = document.getElementById('cust-name').value;
+            const addr = document.getElementById('cust-address').value;
+            const delivery = document.getElementById('delivery-location').value;
+            if(!cart.length || !name || !paymentMethod || delivery === "0") return alert("Preencha todos os dados!");
+
+            let msg = `*PEDIDO - TERREIRO DO BARBOSA*\n\n`;
+            msg += `👤 *Cliente:* ${name}\n📍 *Endereço:* ${addr}\n💳 *Pagamento:* ${paymentMethod}\n`;
+            if(paymentMethod === 'Dinheiro') msg += `💵 *Troco para:* ${document.getElementById('valor-troco').value || 'Não'}\n`;
+            msg += `\n*ITENS:*\n`;
+            cart.forEach(i => msg += `• ${i.qty}x ${i.name} ${i.obs ? `(${i.obs})` : ''}\n`);
+            msg += `\n*TOTAL: ${document.getElementById('summary-total').innerText}*`;
+            
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`);
+        }
+
+        // Funções Auxiliares
+        function closeModal() { document.getElementById('item-modal').classList.add('hidden'); }
+        function toggleCartModal(s) { document.getElementById('cart-modal').classList.toggle('hidden', !s); }
+        function setPayment(m) { 
+            paymentMethod = m; 
+            document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`pay-${m}`).classList.add('active');
+            document.getElementById('troco-container').classList.toggle('hidden', m !== 'Dinheiro');
+        }
+        function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
+        function filterCategory(cat) { renderMenu(cat); }
+        function searchProduct() { renderMenu('todas'); }
+
+        function renderDeliveryOptions() {
+            const select = document.getElementById('delivery-location');
+            TAXAS_ENTREGA.forEach(t => select.innerHTML += `<option value="${t.bairro}" data-fee="${t.taxa}">${t.bairro} (R$ ${t.taxa.toFixed(2)})</option>`);
+        }
+
+        // Configurações ADM
+        function openAdmin() {
+            if(prompt("Senha ADM:") === "1234") {
+                document.getElementById('admin-modal').classList.remove('hidden');
+                document.getElementById('admin-product-list').innerHTML = PRODUTOS.map((p, i) => `
+                    <div class="flex justify-between items-center p-2 border-b text-xs">
+                        <span class="font-bold uppercase">${p.name}</span>
+                        <input type="number" step="0.5" value="${p.price}" onchange="PRODUTOS[${i}].price = parseFloat(this.value)" class="w-20 border p-1 rounded font-bold">
+                    </div>`).join('');
+            }
+        }
+        function saveAdmin() {
+            localStorage.setItem('barbosa_db', JSON.stringify(PRODUTOS));
+            alert("Preços Atualizados!");
+            renderMenu();
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+        function closeAdmin() { document.getElementById('admin-modal').classList.add('hidden'); }
+    </script>
+</body>
+</html>
