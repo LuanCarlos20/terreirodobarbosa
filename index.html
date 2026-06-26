@@ -122,7 +122,7 @@ function relogio(){
     d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-// CONSULTÓRIOS 03 A 12
+// CONSULTÓRIOS 03–12 (SEM UNDEFINED)
 let dados=[
 {c:3,manha:"",tarde:"",onM:false,onT:false},
 {c:4,manha:"",tarde:"",onM:false,onT:false},
@@ -145,12 +145,20 @@ function carregar(){
     if(s) dados=JSON.parse(s);
 }
 
-// alternar ON/OFF
-function toggle(index,tipo){
-    if(tipo==="M") dados[index].onM=!dados[index].onM;
-    if(tipo==="T") dados[index].onT=!dados[index].onT;
-    salvar();
-    render();
+// toggle seguro (SEM ERRO)
+function toggle(i,tipo){
+
+if(tipo==="M"){
+dados[i].onM=!dados[i].onM;
+}
+
+if(tipo==="T"){
+dados[i].onT=!dados[i].onT;
+}
+
+salvar();
+render();
+
 }
 
 function render(){
@@ -166,15 +174,21 @@ html+=`
 
 dados.forEach((d,i)=>{
 
+// GARANTIA PARA NÃO DAR UNDEFINED
+let numero=d.c || (i+3);
+
+let manha=d.manha || "";
+let tarde=d.tarde || "";
+
 html+=`
 <div class="item">
 
-<div class="numero">Consultório ${d.c}</div>
+<div class="numero">Consultório ${numero}</div>
 
 <br>
 
 <b>Manhã:</b><br>
-<input value="${d.manha}" onchange="dados[${i}].manha=this.value;salvar()">
+<input value="${manha}" onchange="dados[${i}].manha=this.value;salvar()">
 <span class="status ${d.onM?'on':'off'}">
 ${d.onM?'🟢 ON':'🔴 OFF'}
 </span><br>
@@ -185,7 +199,7 @@ ${d.onM?'Desligar':'Ligar'}
 <br><br>
 
 <b>Tarde:</b><br>
-<input value="${d.tarde}" onchange="dados[${i}].tarde=this.value;salvar()">
+<input value="${tarde}" onchange="dados[${i}].tarde=this.value;salvar()">
 <span class="status ${d.onT?'on':'off'}">
 ${d.onT?'🟢 ON':'🔴 OFF'}
 </span><br>
@@ -205,6 +219,7 @@ html+=`
 `;
 
 document.getElementById("conteudo").innerHTML=html;
+
 }
 
 setInterval(relogio,1000);
