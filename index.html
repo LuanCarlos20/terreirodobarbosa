@@ -77,6 +77,14 @@ input{
     border-radius:5px;
 }
 
+.status{
+    font-weight:bold;
+    font-size:13px;
+}
+
+.on{color:green;}
+.off{color:red;}
+
 </style>
 </head>
 
@@ -101,7 +109,7 @@ function relogio(){
     d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-// CONSULTÓRIOS 3 A 12
+// CONSULTÓRIOS 03-12
 let dados=[
 {c:3,manha:"",tarde:""},
 {c:4,manha:"",tarde:""},
@@ -115,18 +123,20 @@ let dados=[
 {c:12,manha:"",tarde:""}
 ];
 
-// carregar localStorage
+function salvar(){
+    localStorage.setItem("consultorios",JSON.stringify(dados));
+}
+
 function carregar(){
     let s=localStorage.getItem("consultorios");
     if(s) dados=JSON.parse(s);
 }
 
-// salvar localStorage
-function salvar(){
-    localStorage.setItem("consultorios",JSON.stringify(dados));
+// status ON/OFF automático
+function status(valor){
+    return valor && valor.trim()!=="" ? "on" : "off";
 }
 
-// renderizar tela
 function render(){
 
 let html="";
@@ -149,9 +159,17 @@ html+=`
 
 <label>Manhã</label>
 <input value="${d.manha}" onchange="dados[${i}].manha=this.value;salvar()">
+<span class="status ${status(d.manha)}">
+${status(d.manha)==="on"?"🟢 ON":"🔴 OFF"}
+</span>
+
+<br><br>
 
 <label>Tarde</label>
 <input value="${d.tarde}" onchange="dados[${i}].tarde=this.value;salvar()">
+<span class="status ${status(d.tarde)}">
+${status(d.tarde)==="on"?"🟢 ON":"🔴 OFF"}
+</span>
 
 </div>
 `;
