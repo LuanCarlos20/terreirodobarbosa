@@ -2,28 +2,20 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel dos Consultórios</title>
+<title>Painel Consultórios</title>
 
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
-}
-
 body{
-    background:#eef2f7;
+    font-family:Arial;
+    margin:0;
     padding:20px;
+    background:#eef2f7;
 }
 
 .topo{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:20px;
 }
 
 h1{
@@ -31,255 +23,143 @@ h1{
 }
 
 #relogio{
-    background:#111;
+    background:#000;
     color:#0f0;
-    padding:15px;
+    padding:10px 20px;
     border-radius:10px;
-    font-size:22px;
-    font-weight:bold;
-    text-align:center;
-    min-width:220px;
+    font-size:20px;
 }
 
 #data{
-    font-size:18px;
-    color:#444;
+    color:#555;
     margin-top:5px;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
-    box-shadow:0 5px 15px rgba(0,0,0,.2);
-}
-
-th{
-    background:#0d6efd;
-    color:white;
+.caixa{
+    background:#fff;
     padding:15px;
-}
-
-td{
-    padding:12px;
-    border-bottom:1px solid #ddd;
-    text-align:center;
-}
-
-input{
-    width:100%;
-    padding:8px;
-}
-
-.status{
-    padding:8px 15px;
-    color:white;
-    border-radius:20px;
-    font-weight:bold;
-}
-
-.on{
-    background:#28a745;
-}
-
-.off{
-    background:#dc3545;
-}
-
-button{
-    padding:8px 15px;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-    color:white;
-}
-
-.salvar{
-    background:#0d6efd;
-}
-
-.alternar{
-    background:#ff9800;
-}
-
-footer{
-    text-align:center;
     margin-top:20px;
-    color:#555;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.2);
 }
 
+h2{
+    margin:0 0 10px 0;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:10px;
+}
+
+.item{
+    background:#f4f4f4;
+    padding:10px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.on{color:green;font-weight:bold;}
+.off{color:red;font-weight:bold;}
 </style>
 </head>
 
 <body>
 
 <div class="topo">
-
-<div>
-<h1>Painel dos Consultórios</h1>
-<div id="data"></div>
+    <div>
+        <h1>Painel Consultórios</h1>
+        <div id="data"></div>
+    </div>
+    <div id="relogio"></div>
 </div>
 
-<div id="relogio"></div>
-
-</div>
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Consultório</th>
-<th>Médico</th>
-<th>Status</th>
-<th>Ações</th>
-
-</tr>
-
-</thead>
-
-<tbody id="tabela"></tbody>
-
-</table>
-
-<footer>
-Sistema Automático de Consultórios
-</footer>
+<div id="conteudo"></div>
 
 <script>
 
-const consultorios=[
-{numero:1,medico:"Livre",status:false},
-{numero:2,medico:"Livre",status:false},
-{numero:3,medico:"",status:false},
-{numero:4,medico:"",status:false},
-{numero:5,medico:"",status:false},
-{numero:6,medico:"",status:false},
-{numero:7,medico:"",status:false},
-{numero:8,medico:"",status:false},
-{numero:9,medico:"",status:false},
-{numero:10,medico:"",status:false},
-{numero:11,medico:"",status:false},
-{numero:12,medico:"",status:false},
-];
-
-function atualizarSegunda(){
-
-const hora=new Date().getHours();
-
-const tarde=hora>=13;
-
-consultorios[2].medico="Dra. Sofia";
-consultorios[2].status=true;
-
-consultorios[3].medico=tarde?"Livre":"Carlos Neves";
-consultorios[3].status=!tarde;
-
-consultorios[4].medico=tarde?"Livre":"Ricardo Quidute";
-consultorios[4].status=!tarde;
-
-consultorios[5].medico=tarde?"Livre":"Ricardo Parente";
-consultorios[5].status=!tarde;
-
-consultorios[6].medico=tarde?"Dr. Hellen":"Livre";
-consultorios[6].status=tarde;
-
-consultorios[7].medico=tarde?"Livre":"Dr. Samuel";
-consultorios[7].status=!tarde;
-
-consultorios[8].medico=tarde?"Dr. Yuri":"Livre";
-consultorios[8].status=tarde;
-
-consultorios[9].medico="Dra. Renata Carvalho";
-consultorios[9].status=true;
-
-consultorios[10].medico="Dra. Andrezza";
-consultorios[10].status=true;
-
-consultorios[11].medico=tarde?"Dr. Vinicius":"Livre";
-consultorios[11].status=tarde;
-
-}
-
-function diaAtual(){
-    const dias=["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
-    const hoje=new Date();
-    return dias[hoje.getDay()];
-}
-
-function atualizarDataHora(){
-    const agora=new Date();
-
-    const data=agora.toLocaleDateString("pt-BR");
-    const hora=agora.toLocaleTimeString("pt-BR");
-
+function atualizarRelogio(){
+    const d=new Date();
+    document.getElementById("relogio").innerHTML=d.toLocaleTimeString();
     document.getElementById("data").innerHTML=
-        `${diaAtual()} - ${data}`;
-
-    document.getElementById("relogio").innerHTML=hora;
+        d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-function carregarTabela(){
-
-    const tabela=document.getElementById("tabela");
-    tabela.innerHTML="";
-
-    consultorios.forEach((c,i)=>{
-
-        const statusHTML=c.status
-        ? `<span class="status on">🟢 ON</span>`
-        : `<span class="status off">🔴 OFF</span>`;
-
-        tabela.innerHTML+=`
-        <tr>
-            <td><b>${String(c.numero).padStart(2,"0")}</b></td>
-
-            <td>
-                <input id="med${i}" value="${c.medico}">
-            </td>
-
-            <td>${statusHTML}</td>
-
-            <td>
-                <button class="salvar" onclick="salvarNome(${i})">
-                    Salvar
-                </button>
-
-                <button class="alternar" onclick="trocar(${i})">
-                    ON/OFF
-                </button>
-            </td>
-        </tr>
-        `;
-    });
+function diaSemana(){
+    return new Date().getDay(); // 1 = segunda
 }
 
-function salvarNome(i){
-    const nome=document.getElementById("med"+i).value;
-    consultorios[i].medico=nome;
-    carregarTabela();
+function render(){
+
+let html="";
+let dia=diaSemana();
+
+// ================= SEGUNDA =================
+if(dia===1){
+
+html+=`
+
+<div class="caixa">
+<h2>SEGUNDA - MANHÃ</h2>
+<div class="grid">
+
+<div class="item">03 - Dra. Sofia <span class="on">ON</span></div>
+<div class="item">04 - Carlos Neves <span class="on">ON</span></div>
+<div class="item">05 - Ricardo Quidute <span class="on">ON</span></div>
+<div class="item">06 - Ricardo Parente <span class="on">ON</span></div>
+<div class="item">07 - LIVRE <span class="off">OFF</span></div>
+<div class="item">08 - Dr. Samuel <span class="on">ON</span></div>
+<div class="item">09 - LIVRE <span class="off">OFF</span></div>
+<div class="item">10 - Dra. Renata Carvalho <span class="on">ON</span></div>
+<div class="item">11 - Dra. Andrezza <span class="on">ON</span></div>
+<div class="item">12 - LIVRE <span class="off">OFF</span></div>
+
+</div>
+</div>
+
+<div class="caixa">
+<h2>SEGUNDA - TARDE</h2>
+<div class="grid">
+
+<div class="item">03 - Dra. Sofia <span class="on">ON</span></div>
+<div class="item">04 - LIVRE <span class="off">OFF</span></div>
+<div class="item">05 - LIVRE <span class="off">OFF</span></div>
+<div class="item">06 - LIVRE <span class="off">OFF</span></div>
+<div class="item">07 - Dr. Hellen <span class="on">ON</span></div>
+<div class="item">08 - LIVRE <span class="off">OFF</span></div>
+<div class="item">09 - Dr. Yuri <span class="on">ON</span></div>
+<div class="item">10 - Dra. Renata Carvalho <span class="on">ON</span></div>
+<div class="item">11 - Dra. Andrezza <span class="on">ON</span></div>
+<div class="item">12 - Dr. Vinicius <span class="on">ON</span></div>
+
+</div>
+</div>
+
+`;
+
 }
 
-function trocar(i){
-    consultorios[i].status=!consultorios[i].status;
-    carregarTabela();
+// ================= OUTROS DIAS =================
+else{
+html+=`
+<div class="caixa">
+<h2>TERÇA À SEXTA</h2>
+<p>Agenda ainda não configurada.</p>
+</div>
+`;
 }
 
-function atualizarSistema(){
-
-    const hoje=new Date().getDay(); // 1 = segunda
-
-    if(hoje===1){
-        atualizarSegunda();
-    }
-
-    carregarTabela();
-    atualizarDataHora();
+document.getElementById("conteudo").innerHTML=html;
 }
 
-setInterval(atualizarSistema,1000);
-atualizarSistema();
+setInterval(()=>{
+    atualizarRelogio();
+    render();
+},1000);
+
+render();
+atualizarRelogio();
 
 </script>
 
