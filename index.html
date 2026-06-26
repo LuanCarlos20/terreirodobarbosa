@@ -63,27 +63,40 @@ h2{
     border-radius:8px;
 }
 
-label{
-    font-size:12px;
-    color:#666;
+.numero{
+    font-weight:bold;
+    font-size:16px;
+    color:#000;
 }
 
 input{
     width:100%;
     padding:6px;
     margin-top:3px;
-    margin-bottom:8px;
+    margin-bottom:5px;
     border:1px solid #ccc;
     border-radius:5px;
 }
 
 .status{
     font-weight:bold;
-    font-size:13px;
+    margin-left:5px;
 }
 
 .on{color:green;}
 .off{color:red;}
+
+button{
+    padding:6px 10px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    margin-top:5px;
+    color:white;
+}
+
+.btnOn{background:#28a745;}
+.btnOff{background:#dc3545;}
 
 </style>
 </head>
@@ -109,18 +122,18 @@ function relogio(){
     d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-// CONSULTÓRIOS 03-12
+// CONSULTÓRIOS 03 A 12
 let dados=[
-{c:3,manha:"",tarde:""},
-{c:4,manha:"",tarde:""},
-{c:5,manha:"",tarde:""},
-{c:6,manha:"",tarde:""},
-{c:7,manha:"",tarde:""},
-{c:8,manha:"",tarde:""},
-{c:9,manha:"",tarde:""},
-{c:10,manha:"",tarde:""},
-{c:11,manha:"",tarde:""},
-{c:12,manha:"",tarde:""}
+{c:3,manha:"",tarde:"",onM:false,onT:false},
+{c:4,manha:"",tarde:"",onM:false,onT:false},
+{c:5,manha:"",tarde:"",onM:false,onT:false},
+{c:6,manha:"",tarde:"",onM:false,onT:false},
+{c:7,manha:"",tarde:"",onM:false,onT:false},
+{c:8,manha:"",tarde:"",onM:false,onT:false},
+{c:9,manha:"",tarde:"",onM:false,onT:false},
+{c:10,manha:"",tarde:"",onM:false,onT:false},
+{c:11,manha:"",tarde:"",onM:false,onT:false},
+{c:12,manha:"",tarde:"",onM:false,onT:false}
 ];
 
 function salvar(){
@@ -132,9 +145,12 @@ function carregar(){
     if(s) dados=JSON.parse(s);
 }
 
-// status ON/OFF automático
-function status(valor){
-    return valor && valor.trim()!=="" ? "on" : "off";
+// alternar ON/OFF
+function toggle(index,tipo){
+    if(tipo==="M") dados[index].onM=!dados[index].onM;
+    if(tipo==="T") dados[index].onT=!dados[index].onT;
+    salvar();
+    render();
 }
 
 function render(){
@@ -143,7 +159,7 @@ let html="";
 
 html+=`
 <div class="caixa">
-<h2>CONSULTÓRIOS (MANHÃ / TARDE)</h2>
+<h2>CONSULTÓRIOS (03 - 12)</h2>
 
 <div class="grid">
 `;
@@ -153,25 +169,32 @@ dados.forEach((d,i)=>{
 html+=`
 <div class="item">
 
-<b>Consultório ${d.c}</b>
+<div class="numero">Consultório ${d.c}</div>
 
-<br><br>
+<br>
 
-<label>Manhã</label>
+<b>Manhã:</b><br>
 <input value="${d.manha}" onchange="dados[${i}].manha=this.value;salvar()">
-<span class="status ${status(d.manha)}">
-${status(d.manha)==="on"?"🟢 ON":"🔴 OFF"}
-</span>
+<span class="status ${d.onM?'on':'off'}">
+${d.onM?'🟢 ON':'🔴 OFF'}
+</span><br>
+<button class="${d.onM?'btnOff':'btnOn'}" onclick="toggle(${i},'M')">
+${d.onM?'Desligar':'Ligar'}
+</button>
 
 <br><br>
 
-<label>Tarde</label>
+<b>Tarde:</b><br>
 <input value="${d.tarde}" onchange="dados[${i}].tarde=this.value;salvar()">
-<span class="status ${status(d.tarde)}">
-${status(d.tarde)==="on"?"🟢 ON":"🔴 OFF"}
-</span>
+<span class="status ${d.onT?'on':'off'}">
+${d.onT?'🟢 ON':'🔴 OFF'}
+</span><br>
+<button class="${d.onT?'btnOff':'btnOn'}" onclick="toggle(${i},'T')">
+${d.onT?'Desligar':'Ligar'}
+</button>
 
 </div>
+
 `;
 
 });
