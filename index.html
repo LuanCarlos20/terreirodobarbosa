@@ -49,12 +49,11 @@ h1{
 
 h2{
     margin:0 0 10px 0;
-    color:#333;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(2, 1fr);
+    grid-template-columns:repeat(2,1fr);
     gap:10px;
 }
 
@@ -62,17 +61,22 @@ h2{
     background:#f4f4f4;
     padding:10px;
     border-radius:8px;
-    font-size:14px;
 }
 
-.on{color:green;font-weight:bold;}
-.off{color:red;font-weight:bold;}
-
-.obs{
-    margin-top:10px;
+label{
+    font-size:12px;
     color:#666;
-    font-size:13px;
 }
+
+input{
+    width:100%;
+    padding:6px;
+    margin-top:3px;
+    margin-bottom:8px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
 </style>
 </head>
 
@@ -97,90 +101,76 @@ function relogio(){
     d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-function dia(){
-    return new Date().getDay(); // 1 segunda
+// CONSULTÓRIOS 3 A 12
+let dados=[
+{c:3,manha:"",tarde:""},
+{c:4,manha:"",tarde:""},
+{c:5,manha:"",tarde:""},
+{c:6,manha:"",tarde:""},
+{c:7,manha:"",tarde:""},
+{c:8,manha:"",tarde:""},
+{c:9,manha:"",tarde:""},
+{c:10,manha:"",tarde:""},
+{c:11,manha:"",tarde:""},
+{c:12,manha:"",tarde:""}
+];
+
+// carregar localStorage
+function carregar(){
+    let s=localStorage.getItem("consultorios");
+    if(s) dados=JSON.parse(s);
 }
 
+// salvar localStorage
+function salvar(){
+    localStorage.setItem("consultorios",JSON.stringify(dados));
+}
+
+// renderizar tela
 function render(){
 
 let html="";
-let d=dia();
-
-// ================= SEGUNDA =================
-if(d===1){
 
 html+=`
-
 <div class="caixa">
-<h2>SEGUNDA - MANHÃ</h2>
+<h2>CONSULTÓRIOS (MANHÃ / TARDE)</h2>
+
 <div class="grid">
-
-<div class="item">03 - Dra. Sofia <span class="on">ON</span></div>
-<div class="item">04 - Carlos Neves <span class="on">ON</span></div>
-<div class="item">05 - Ricardo Quidute <span class="on">ON</span></div>
-<div class="item">06 - Ricardo Parente <span class="on">ON</span></div>
-<div class="item">07 - LIVRE <span class="off">OFF</span></div>
-<div class="item">08 - Dr. Samuel <span class="on">ON</span></div>
-<div class="item">09 - LIVRE <span class="off">OFF</span></div>
-<div class="item">10 - Dra. Renata Carvalho <span class="on">ON</span></div>
-<div class="item">11 - Dra. Andrezza <span class="on">ON</span></div>
-<div class="item">12 - LIVRE <span class="off">OFF</span></div>
-
-</div>
-</div>
-
-<div class="caixa">
-<h2>SEGUNDA - TARDE</h2>
-<div class="grid">
-
-<div class="item">03 - Dra. Sofia <span class="on">ON</span></div>
-<div class="item">04 - LIVRE <span class="off">OFF</span></div>
-<div class="item">05 - LIVRE <span class="off">OFF</span></div>
-<div class="item">06 - LIVRE <span class="off">OFF</span></div>
-<div class="item">07 - Dr. Hellen <span class="on">ON</span></div>
-<div class="item">08 - LIVRE <span class="off">OFF</span></div>
-<div class="item">09 - Dr. Yuri <span class="on">ON</span></div>
-<div class="item">10 - Dra. Renata Carvalho <span class="on">ON</span></div>
-<div class="item">11 - Dra. Andrezza <span class="on">ON</span></div>
-<div class="item">12 - Dr. Vinicius <span class="on">ON</span></div>
-
-</div>
-</div>
-
-<div class="obs">
-✔ Terça, Quarta, Quinta e Sexta ainda não configurados
-</div>
-
 `;
 
-}
-
-// ================= OUTROS DIAS =================
-else{
+dados.forEach((d,i)=>{
 
 html+=`
+<div class="item">
 
-<div class="caixa">
-<h2>TERÇA À SEXTA</h2>
-<div class="obs">
-Agenda ainda não configurada. Você pode adicionar depois.
-</div>
-</div>
+<b>Consultório ${d.c}</b>
 
+<br><br>
+
+<label>Manhã</label>
+<input value="${d.manha}" onchange="dados[${i}].manha=this.value;salvar()">
+
+<label>Tarde</label>
+<input value="${d.tarde}" onchange="dados[${i}].tarde=this.value;salvar()">
+
+</div>
 `;
 
-}
+});
+
+html+=`
+</div>
+</div>
+`;
 
 document.getElementById("conteudo").innerHTML=html;
 }
 
-setInterval(()=>{
-    relogio();
-    render();
-},1000);
+setInterval(relogio,1000);
 
-relogio();
+carregar();
 render();
+relogio();
 
 </script>
 
