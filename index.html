@@ -20,8 +20,8 @@ body{
 }
 
 h1{
-    color:#0d6efd;
     margin:0;
+    color:#0d6efd;
 }
 
 #relogio{
@@ -29,7 +29,6 @@ h1{
     color:#0f0;
     padding:10px 20px;
     border-radius:10px;
-    font-size:20px;
     font-weight:bold;
 }
 
@@ -38,16 +37,32 @@ h1{
     margin-top:5px;
 }
 
-.caixa{
-    background:#fff;
-    padding:15px;
-    margin-top:20px;
-    border-radius:10px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.2);
+.menu{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
 }
 
-h2{
-    margin:0 0 10px 0;
+.menu button{
+    padding:10px;
+    border:none;
+    cursor:pointer;
+    border-radius:5px;
+    background:#ddd;
+    font-weight:bold;
+}
+
+.menu button.ativo{
+    background:#0d6efd;
+    color:#fff;
+}
+
+.caixa{
+    background:#fff;
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.2);
 }
 
 .grid{
@@ -64,14 +79,12 @@ h2{
 
 .numero{
     font-weight:bold;
-    font-size:16px;
 }
 
 input{
     width:100%;
     padding:6px;
     margin-top:3px;
-    margin-bottom:5px;
 }
 
 .status{
@@ -81,16 +94,17 @@ input{
 .on{color:green;}
 .off{color:red;}
 
-button{
-    padding:6px 10px;
+button.toggle{
+    margin-top:5px;
+    padding:6px;
     border:none;
     border-radius:5px;
     cursor:pointer;
     color:white;
 }
 
-.btnOn{background:#28a745;}
-.btnOff{background:#dc3545;}
+.onBtn{background:#28a745;}
+.offBtn{background:#dc3545;}
 </style>
 </head>
 
@@ -104,6 +118,8 @@ button{
     <div id="relogio"></div>
 </div>
 
+<div class="menu" id="menu"></div>
+
 <div id="conteudo"></div>
 
 <script>
@@ -115,91 +131,110 @@ function relogio(){
     d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-// ===== CONSULTÓRIOS =====
+// dias
 let dias=["segunda","terca","quarta","quinta","sexta"];
+let atual="segunda";
 
+// dados
 let dados={};
 
-dias.forEach(dia=>{
-    dados[dia]=[];
-
-    for(let i=3;i<=12;i++){
-        dados[dia].push({
-            c:i,
-            manha:"",
-            tarde:"",
-            onM:false,
-            onT:false
-        });
-    }
-});
-
-// carregar
-function carregar(){
-    let s=localStorage.getItem("agenda");
-    if(s) dados=JSON.parse(s);
+function init(){
+    dias.forEach(d=>{
+        dados[d]=[];
+        for(let i=3;i<=12;i++){
+            dados[d].push({
+                c:i,
+                manha:"",
+                tarde:"",
+                onM:false,
+                onT:false
+            });
+        }
+    });
 }
 
 // salvar
 function salvar(){
-    localStorage.setItem("agenda",JSON.stringify(dados));
+    localStorage.setItem("agendaTabs",JSON.stringify(dados));
 }
 
-// toggle ON/OFF
+// carregar
+function carregar(){
+    let s=localStorage.getItem("agendaTabs");
+    if(s) dados=JSON.parse(s);
+}
+
+// toggle
 function toggle(dia,i,tipo){
+    if(tipo==="M") dados[dia][i].onM=!dados[dia][i].onM;
+    if(tipo==="T") dados[dia][i].onT=!dados[dia][i].onT;
+    salvar();
+    render();
+}
 
-if(tipo==="M") dados[dia][i].onM=!dados[dia][i].onM;
-if(tipo==="T") dados[dia][i].onT=!dados[dia][i].onT;
+// mudar dia
+function mudar(d){
+    atual=d;
+    render();
+}
 
-salvar();
-render();
-
+// menu
+function menu(){
+    let html="";
+    dias.forEach(d=>{
+        html+=`
+        <button class="${atual===d?'ativo':''}" onclick="mudar('${d}')">
+        ${d.toUpperCase()}
+        </button>
+        `;
+    });
+    document.getElementById("menu").innerHTML=html;
 }
 
 // render
 function render(){
 
-let html="";
+menu();
 
-dias.forEach(dia=>{
+let html="";
 
 html+=`
 <div class="caixa">
-<h2>${dia.toUpperCase()}</h2>
+<h2>${atual.toUpperCase()}</h2>
 
 <div class="grid">
 `;
 
-dados[dia].forEach((d,i)=>{
+dados[atual].forEach((d,i)=>{
 
 html+=`
 <div class="item">
 
 <div class="numero">Consultório ${d.c}</div>
 
-<b>Manhã:</b>
+<b>Manhã</b>
 <input value="${d.manha}"
-onchange="dados['${dia}'][${i}].manha=this.value;salvar()">
+onchange="dados['${atual}'][${i}].manha=this.value;salvar()">
 <span class="${d.onM?'on':'off'}">
 ${d.onM?'🟢 ON':'🔴 OFF'}
 </span>
 <br>
-<button class="${d.onM?'btnOff':'btnOn'}"
-onclick="toggle('${dia}',${i},'M')">
+<button class="toggle ${d.onM?'offBtn':'onBtn'}"
+onclick="toggle('${atual}',${i},'M')">
 ${d.onM?'Desligar':'Ligar'}
 </button>
 
 <br><br>
 
-<b>Tarde:</b>
+<b>Tarde</b>
 <input value="${d.tarde}"
-onchange="dados['${dia}'][${i}].tarde=this.value;salvar()">
+onchange="dados['${atual}'][${i}].tarde=this.value;salvar()">
 <span class="${d.onT?'on':'off'}">
 ${d.onT?'🟢 ON':'🔴 OFF'}
 </span>
 <br>
-<button class="${d.onT?'btnOff':'btnOn'}"
-onclick="toggle('${dia}',${i},'T')">
+<button class="toggle ${d.onT?'offBtn':'onBtn'}"
+onclick="toggle('${atual}',${i},'T')">
 ${d.onT?'Desligar':'Ligar'}
 </button>
 
@@ -213,14 +248,13 @@ html+=`
 </div>
 `;
 
-});
-
 document.getElementById("conteudo").innerHTML=html;
 
 }
 
 setInterval(relogio,1000);
 
+init();
 carregar();
 render();
 relogio();
